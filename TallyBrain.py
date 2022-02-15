@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import ttk
 
 FONT_BODY = ("Veranda", 12)
 
@@ -7,10 +8,14 @@ class TallyBoardDB(tk.Tk):
 
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
+
+        # tk.Tk.iconbitmap(self, default="image.ico")
+        tk.Tk.wm_title(self, "Tally Board DB")
+        tk.Tk.wm_geometry(self, "400x600")
+        tk.Tk.wm_resizable(self, width=False, height=False)
+
         container = tk.Frame(self)
-
         container.pack(side="top", fill="both", expand=True)
-
         container.grid_rowconfigure(0, weight=1)
         container.grid_columnconfigure(0, weight=1)
 
@@ -33,34 +38,34 @@ class StartPage(tk.Frame):
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
-        label = tk.Label(self, text="Start Page", font=FONT_BODY)
+        label = ttk.Label(self, text="Welcome to Tally Board!", font=FONT_BODY)
         label.pack(pady=10,padx=10)
 
-        button = tk.Button(self, text="Edit Employees",
-                            command=lambda: controller.show_frame(EditEmployees))
+        button = ttk.Button(self, text="Edit Employees",
+                        command=lambda: controller.show_frame(EditEmployees))
         button.pack()
 
-        button2 = tk.Button(self, text="View Tally",
-                            command=lambda: controller.show_frame(Stats))
+        button2 = ttk.Button(self, text="View Tally",
+                        command=lambda: controller.show_frame(Stats))
         button2.pack()
 
 class EditEmployees(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
-        label = tk.Label(self, text="Edit Employees Page", font=FONT_BODY)
+        label = ttk.Label(self, text="Edit Employees Page", font=FONT_BODY)
         label.pack(padx=10, pady=10)
 
-        button1 = tk.Button(self, text='Return to Main', width=25,
-                            command=lambda: controller.show_frame(StartPage))
+        button1 = ttk.Button(self, text='Return to Main', width=25,
+                        command=lambda: controller.show_frame(StartPage))
         button1.pack()
 
 class Stats(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
-        label = tk.Label(self, text="Tally Board : Stats", font=FONT_BODY)
+        label = ttk.Label(self, text="Tally Board : Stats", font=FONT_BODY)
         label.pack(padx=10, pady=10)
-        button1 = tk.Button(self, text='Return to Main', width=25,
-                            command=lambda: controller.show_frame(StartPage))
+        button1 = ttk.Button(self, text='Return to Main', width=25,
+                        command=lambda: controller.show_frame(StartPage))
         button1.pack()
 
 app = TallyBoardDB()
