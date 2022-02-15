@@ -33,7 +33,7 @@ class StartPage(tk.Frame):
         tk.Frame.__init__(self, parent)
 
         label = tk.Label(text="hello", font=FONT_BODY)
-        button1 = tk.Button(text = 'Edit Employees', width = 25)
+        button1 = tk.Button(text = 'Edit Employees', width = 25, command=)
         button2 = tk.Button(text = 'View Tally', width=25)
 
         label.pack()
