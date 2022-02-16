@@ -38,16 +38,16 @@ class StartPage(tk.Frame):
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
-        label = ttk.Label(self, text="Welcome to Tally Board!", font=FONT_BODY)
+        tk.Tk.configure(self, background="Orange")
+        label = ttk.Label(self,background="Orange", text="Welcome to Tally Board!", font=FONT_BODY)
         label.pack(pady=10,padx=10)
 
-        button = ttk.Button(self, text="Edit Employees",
-                        command=lambda: controller.show_frame(EditEmployees))
-        button.pack()
+        editEmp_btn = ttk.Button(self, text="Edit Employees",command=lambda: controller.show_frame(EditEmployees))
+        editEmp_btn.pack()
 
-        button2 = ttk.Button(self, text="View Tally",
-                        command=lambda: controller.show_frame(Stats))
-        button2.pack()
+        viewTally_btn = ttk.Button(self,text="View Tally", command=lambda: controller.show_frame(Stats))
+        viewTally_btn.pack()
+
 
 class EditEmployees(tk.Frame):
     def __init__(self, parent, controller):
@@ -55,9 +55,8 @@ class EditEmployees(tk.Frame):
         label = ttk.Label(self, text="Edit Employees Page", font=FONT_BODY)
         label.pack(padx=10, pady=10)
 
-        button1 = ttk.Button(self, text='Return to Main', width=25,
-                        command=lambda: controller.show_frame(StartPage))
-        button1.pack()
+        return_btn = ttk.Button(self, text='Return to Main', width=25, command=lambda: controller.show_frame(StartPage))
+        return_btn.pack()
 
 class Stats(tk.Frame):
     def __init__(self, parent, controller):
