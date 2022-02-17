@@ -32,16 +32,16 @@ class Db:
     def __init__(self):
         self.data = {}
 
-    def Db_push(self):
+    def db_push(self):
         json_object = json.dumps(self.data)
         with open("Database.json", "w") as outfile:
             outfile.write(json_object)
 
-    def Db_pull(self):
+    def db_pull(self):
         with open('Database.json', 'r') as openfile:
             json_object = json.load(openfile)
+        return(json_object)
 
-        print(json_object)
 
 
 class Gui:
