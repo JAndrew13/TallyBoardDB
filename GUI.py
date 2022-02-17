@@ -1,8 +1,8 @@
 import tkinter as tk
-from tkinter import ttk, messagebox
+from tkinter import ttk, messagebox, Listbox, END
 import Manager
 
-FONT_BODY = ("Veranda", 12)
+FONT_BODY = ("Helvetica", 12, "bold")
 
 class TallyBoardDB(tk.Tk):
 
@@ -42,43 +42,57 @@ class StartPage(tk.Frame):
         tk.Frame.__init__(self, parent)
         tk.Tk.configure(self, background="Orange")
 
-        title_label = ttk.Label(self,background="Orange", text="~=Tally Board=~", font=FONT_BODY)
-        title_label.grid(row=0, column=1)
+        spacer1 = tk.Label(self, text="", )
+        spacer1.grid(row=0, column=0)
+
         employees_label = ttk.Label(self, background="Orange", text="Available Workers", font=FONT_BODY)
-        employees_label.grid(row=1, column=1, padx=10, pady=10)
+        employees_label.grid(row=1, column=0)
 
         self.WorkerDisplay(data)
 
         # INSERT DIVIDE LINE
 
-        add_work_button = ttk.Checkbutton(self, text="Add Work")
-        add_work_button.grid(row=10, column=1)
-        sub_work_button = ttk.Checkbutton(self, text="Sub Work")
-        sub_work_button.grid(row=10, column=2)
+        spacer2 = tk.Label(self, text="")
+        spacer2.grid(row=0, column=2,)
+        spacer3 = tk.Label(self, text="")
+        spacer3.grid(row=1, column=2, )
 
         # INSERT DIVIDE LINE
 
         editEmp_btn = ttk.Button(self, text="Edit Employees",command=lambda: controller.show_frame(EditEmployees))
-        editEmp_btn.grid(row=10, column=0)
+        editEmp_btn.grid(row=4, column=0)
         viewTally_btn = ttk.Button(self,text="View Tally", command=lambda: controller.show_frame(Stats))
-        viewTally_btn.grid(row=10, column=3)
+        viewTally_btn.grid(row=5, column=0)
 
+        amount_5_btn = ttk.Button(self, text="5")
+        amount_5_btn.place(x= 225, y=70)
+        amount_10_btn = ttk.Button(self, text="10")
+        amount_10_btn.place(x= 310, y=70)
+        amount_25_btn = ttk.Button(self, text="25")
+        amount_25_btn.place(x= 225, y=103)
+        amount_50_btn = ttk.Button(self, text="50")
+        amount_50_btn.place(x= 310, y=103)
+        amount_100_btn = ttk.Button(self, text="100")
+        amount_100_btn.place(x= 225, y=136)
+        amount_200_btn = ttk.Button(self, text="200")
+        amount_200_btn.place(x= 310, y=136)
+        amount_400_btn = ttk.Button(self, text="400")
+        amount_400_btn.place(x= 225, y=169)
+        amount_800_btn = ttk.Button(self, text="800")
+        amount_800_btn.place(x= 310, y=169)
 
+        add_work_button = ttk.Button(self, text="Add Work")
+        add_work_button.place(x= 225, y=220)
+        sub_work_button = ttk.Button(self, text="Sub Work")
+        sub_work_button.place(x= 310, y=220)
     def WorkerDisplay(self, data):
-        row = 2
-        column = 0
+        lb_workers = tk.Listbox(self, bd=4, font="Veranda", selectbackground="orange")
+        lb_workers.grid(row=3, column=0, padx=20, pady=20 )
         for worker in data:
-            worker_button = ttk.Checkbutton(self, text=worker)
-            worker_button.grid(row=(row//3+2), column=column)
-            if column == 3:
-                row +=1
-            if column < 3:
-                column += 1
-            else:
-                column = 0
-            print(worker)
-            print(f"row:{row}")
-            print(f"column:{column}")
+            lb_workers.insert(END, worker)
+
+
+
 
 class EditEmployees(tk.Frame):
     def __init__(self, parent, controller):
