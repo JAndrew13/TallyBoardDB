@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import ttk, messagebox, Listbox, END
+from tkinter import ttk, END
 import Manager
 
 FONT_BODY = ("Helvetica", 12, "bold")
@@ -43,7 +43,7 @@ class StartPage(tk.Frame):
         tk.Tk.configure(self, background="Orange")
 
         employees_label = ttk.Label(self, background="Orange", text="Available Workers", font=FONT_BODY)
-        employees_label.place(x=25 , y=100)
+        employees_label.place(x=25, y=100)
 
         self.WorkerDisplay(data)
 
@@ -69,25 +69,25 @@ class StartPage(tk.Frame):
         amount_800_btn = ttk.Button(self, text="800")
         amount_800_btn.place(x= 310, y=169)
 
-        custom_label = ttk.Label(text="Cust. Amount:", font=("Veranda", 8, "bold"), background="orange")
+        custom_label = ttk.Label(self, text="Cust. Amount:", font=("Veranda", 8, "bold"), background="orange")
         custom_label.place(x=225, y=200)
-        custom_entry = ttk.Entry(width=12)
+        custom_entry = ttk.Entry(self, width=12)
         custom_entry.place(x=310, y=202)
 
-        total_label = ttk.Label(text="Current Total:", font=("Veranda", 8, "bold"), background="orange")
+        total_label = ttk.Label(self, text="Current Total:", font=("Veranda", 8, "bold"), background="orange")
         total_label.place(x=225, y=232)
-        total_disp_label = ttk.Label(text="XXXX", font=("Veranda", 10, 'bold'), background="orange")
+        total_disp_label = ttk.Label(self, text="XXXX", font=("Veranda", 10, 'bold'), background="orange")
         total_disp_label.place(x=310, y=230)
 
-        reset_button = ttk.Button(text="Reset Value", width= 25)
+        reset_button = ttk.Button(self, text="Reset Value", width= 25)
         reset_button.place(x=225, y=265)
         add_work_button = ttk.Button(self, text="Add Work")
         add_work_button.place(x= 225, y=300)
         sub_work_button = ttk.Button(self, text="Sub Work")
         sub_work_button.place(x= 310, y=300)
 
-        # smiley = ttk.Label(text="😁😃😅😓😣😠", font=("Veranda", 18, "bold"), background="orange")
-        # smiley.place(x=50, y=400)
+        smiley = ttk.Label(self, text="😁😃😅😓😣😠", font=("Veranda", 18, "bold"), background="orange")
+        smiley.place(x=50, y=400)
 
 # ================  TEMP DISPLAY  ========================
 #     def WorkerTally(self):
@@ -95,11 +95,11 @@ class StartPage(tk.Frame):
         worker_tally = "2082"
         worker_mood = "😃"
 
-        slot1 = ttk.Label(text=f"{worker_name} - ${worker_tally}",
+        slot1 = ttk.Label(self, text=f"{worker_name} - ${worker_tally}",
                           font=("Veranda", 15, "bold"),
-                          background='white')
+                          background='orange')
         slot1.place(x=50, y=350)
-        slot2 = ttk.Label(text=worker_mood, font=("Veranda", 18, "bold"), background="orange")
+        slot2 = ttk.Label(self, text=worker_mood, font=("Veranda", 18, "bold"), background="orange")
         slot2.place(x=15, y=345)
 
 
