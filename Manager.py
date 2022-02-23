@@ -23,10 +23,10 @@ class Workshop:
             self.emp_names.pop(f_name)
 
     def Add_tally(self, name, amount):
-        workshop.emp_names[name] += amount
+        workshop.data[name] += amount
 
     def Sub_tally(self, name, amount):
-        workshop.emp_names[name] -= amount
+        workshop.data[name] -= amount
 
 class Db:
     def __init__(self):

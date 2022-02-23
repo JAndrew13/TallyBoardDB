@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import ttk, END
+from tkinter import ttk, END, W
 
 
 class View(tk.Tk):
@@ -46,13 +46,11 @@ class View(tk.Tk):
         self.cust_var = tk.StringVar()
         self.name_var = tk.StringVar()
 
-
         self._make_main_frame()
-        self._make_worker_selector()
         self._make_widgets()
         self.current_total = 0
 
-        self.update_data()
+        self.update_short_data()
 
     # Record Keybindings: Accept integers and BackSpace
 
@@ -60,13 +58,14 @@ class View(tk.Tk):
         self._container = tk.Frame(self, background=self.BG_COLOR)
         self._container.pack(side="top", fill="both", expand=True, padx=self.PAD, pady=self.PAD)
 
-    def _make_worker_selector(self):
+    def _make_worker_selector(self, workers):
         frm = ttk.Frame(self._container)
         frm.place(x=10, y=50)
 
-        self.workers = ["a"]
-        self.lb_workers = tk.Listbox(frm, bd=3, font=self.FONT_BOLD,activestyle='dotbox', selectbackground=self.BG_COLOR, height=10)
+        self.workers = workers
+        self.lb_workers = tk.Listbox(frm, bd=3, font=self.FONT_BOLD, activestyle='dotbox', selectbackground=self.BG_COLOR, height=10)
         self.lb_workers.pack()
+
         for worker in self.workers:
             self.lb_workers.insert(END, worker)
         self.listbox = self.lb_workers
@@ -153,11 +152,12 @@ class View(tk.Tk):
     # Frame : Database Mods
         mod_frm = tk.Frame(self._container, background=self.BG_COLOR)
         mod_frm.place(x=10,y=15)
-    # Button : Edit workers
+
+    # Button : Delete Worker
         self._button_factory(mod_frm, "Del Worker.", 13, 'left', button_name="DeleteWorker")
-    # Button : Clear all Tally
+    # Button : Add Worker
         self._button_factory(mod_frm, "AddWorker", 13, 'left', button_name="AddWorker")
-    # Entry : Worker Name
+    # Entry : Worker Name Entry
         self.validation_alpha = self.cust_frm.register(self._only_letters)
         name_entry = ttk.Entry(mod_frm,
                                validate="key",
@@ -173,7 +173,7 @@ class View(tk.Tk):
                          lambda button=button_name: self.controller.action_button(button_name))
         btn.pack(side=side, padx=2, pady=2)
 
-    def _make_worker_display(self):
+    def _make_worker_display(self, workers):
         # Create outer frame for worker data display
         outer_frame = tk.Frame(self._container, width=360, height=300,
                                highlightthickness=3,
@@ -188,15 +188,24 @@ class View(tk.Tk):
         # worker counter
         workers_in_row = 0
 
+        # sort workers by Tally amount
+        sorted_workers = self.controller.tally_sort(workers)
         #worker display iterator
-        for worker in self.workers:
+        for worker in sorted_workers:
+
             if workers_in_row == self.WORKERS_ROW_COUNT:
                 inner_frame = tk.Frame(outer_frame, background=self.BG_COLOR)
                 inner_frame.pack()
+
                 workers_in_row = 0
 
-            lbl = ttk.Label(inner_frame, text=worker.capitalize(), font=self.FONT_BOLD, background=self.BG_COLOR)
-            lbl.pack(side='left', padx=2, pady=5)
+            name_lbl = ttk.Label(inner_frame, text=worker, font=self.FONT_BOLD, background=self.BG_COLOR, anchor='w', width=10)
+            name_lbl.pack(side='left', padx=2, pady=5)
+            tally_lbl = ttk.Label(inner_frame,text=f"${workers[worker]}", font=self.FONT_TITLE, background=self.BG_COLOR, anchor='w', width=10)
+            tally_lbl.pack(side='left', padx=2, pady=2)
+            temp_lbl = ttk.Label(inner_frame, text=f"*Mood",font=self.FONT_TITLE, background=self.BG_COLOR, anchor='w', width=10)
+            temp_lbl.pack(side='right', padx=2, pady=2)
+
             workers_in_row += 1
 
     def _only_numbers(self, char):
@@ -205,10 +214,14 @@ class View(tk.Tk):
     def _only_letters(self, char):
             return char.isalpha()
 
-    def update_data(self):
+    def update_short_data(self):
         custom_int = self.ent_custom.get()
         self.total_var.set(self.controller.get_total(custom_int))
-        self._make_worker_display()
+
+    def update_long_data(self):
+        self._make_worker_selector(workers=self.controller.fetch_worker_names())
+        self._make_worker_display(workers=self.controller.fetch_working_data())
+        self.controller.request_save()
 
     def main(self):
         self.mainloop()
