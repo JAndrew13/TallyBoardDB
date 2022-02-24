@@ -22,27 +22,18 @@ class Model:
                 "SubmitTotal": 6,
                 "ResetTotal": 7}
 
-    MOOD_SCALE = [0, 100, 250, 500, 1000, 2000, 4000]
+    MOOD_SCALE = [100,500, 1000, 2500, 3500, 5000]
+    MOOD_ICONS = {0:'😁',1:'😃',2:'😅',3:'😓',4:'😣',5:'😠'}
+    MOOD_COLOR = {1: 'green', 2: 'lightgreen', 3: 'yellow', 4: 'DarkYellow', 5: 'red', 6: 'DarkRed'}
+
+
     def __init__(self):
         pass
 
     def decoder(self, code):
         print(f"Decoding {code}")
-
-
-    # Check for "Modify Total" integer
-        int_test = [item for item in code.split("-")]
-        if int_test[0] == "INT":
-            int_val = int_test[1]
-            print(f"integer value = {int_val}")
-            response = 5
-            Model.current_total += int(int_val)
-
-    # IF code isnt "Modify Total" -> Get Action from "Code Library"
-        else:
-            response = Model.CODE_LIB[code]
-
-    # Return 'Response Code'
+        response = Model.CODE_LIB[code]
+        print(response)
         return response
 
     # Reset "Current Total" variables
@@ -85,7 +76,7 @@ class Model:
         print("Creating Database Template")
         self.save(data)
 
-# =============  Worker Construction  ============== #
+# =============  Worker Construction / Management operators  ============== #
 
 # Workshop class modifys the Controllers "Working Data"
 # takes controller and data as INIT variables
