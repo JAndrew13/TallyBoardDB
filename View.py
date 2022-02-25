@@ -71,7 +71,6 @@ class View(tk.Tk):
             self.lb_workers.insert(END, worker)
         self.listbox = self.lb_workers
 
-
         if self.last_selection == "":
             self._selection_cache()
             self.listbox.selection_anchor(0)
