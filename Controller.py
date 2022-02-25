@@ -110,7 +110,6 @@ class Controller:
                 worker_name = self.get_selected_worker()
                 self.set_working_data(self.workshop.del_worker(worker_name))
                 self.view.update_long_data()
-
             else:
                 print("Error: No workers to delete!")
                 pass
@@ -124,6 +123,7 @@ class Controller:
 
             name = self.get_selected_worker()
             if self.submit["oper"] == "+":
+                print("trying to submit")
                 amount = int(self.view.cust_var.get())
                 self.set_working_data(self.workshop.add_tally(name, amount))
             elif self.submit["oper"] == "-":
@@ -138,6 +138,7 @@ class Controller:
             self.model.reset_total(self)
             self.view.cust_var.set(0)
             self.view._button_reseter()
+            self.submit["oper"] = ""
         self.update_entry_boxes()
 
 
@@ -164,6 +165,7 @@ class Controller:
     # Gets selected worker from view.listbox -> returns name of 'Selected Worker'
     def get_selected_worker(self):
         lb_index = self.view.listbox.curselection()
+        print(lb_index)
         return self.view.listbox.get(lb_index)
 
     # Updates View(Entry boxes) with current data

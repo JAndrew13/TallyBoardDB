@@ -33,7 +33,7 @@ class View(tk.Tk):
         super().__init__()
 
         self.controller = controller
-
+        self.last_selection = ""
 
     # Main window properties
 
@@ -70,8 +70,19 @@ class View(tk.Tk):
         for worker in self.workers:
             self.lb_workers.insert(END, worker)
         self.listbox = self.lb_workers
-        self.listbox.selection_anchor(0)
-        self.listbox.select_set(tk.ANCHOR, 0)
+
+
+        if self.last_selection == "":
+            self._selection_cache()
+            self.listbox.selection_anchor(0)
+            self.listbox.select_set(tk.ANCHOR, 0)
+            self.last_selection = self.controller.get_selected_worker()
+            print("Selection test part A")
+        else:
+            print(self.last_selection)
+            # self.listbox.selection_anchor(sel_index)
+            # self.listbox.selet_set(tk.ANCHOR, sel_index)
+            print("selection test Part B")
 
 # =================== Widget and View creation ===================== #
 
@@ -184,7 +195,19 @@ class View(tk.Tk):
 
     def _button_reseter(self):
         self.btn_adder.config(state=tk.ACTIVE)
-        self.btn_suber.config(state=tk.ACTIVE)
+        self.btn_subber.config(state=tk.ACTIVE)
+
+    def _selection_cache(self):
+        if self.last_selection == "":
+            print("No Last Selection")
+            return
+        else:
+            index = 0
+            for worker in self.workers:
+                index += 1
+                if worker == self.last_selection:
+                    return (index-1)
+
     def _make_worker_display(self, workers):
         # Create outer frame for worker data display
         outer_frame = tk.Frame(self._container, width=360, height=300,
