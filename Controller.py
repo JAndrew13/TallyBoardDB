@@ -74,9 +74,6 @@ class Controller:
         custom_value = self.view._get_cust_var()
         total_value = custom_value + int(int_val)
         self.model.current_total = total_value
-        print(f"Controller-_get_int: getting custom entry : {custom_value}")
-        print(f"Controller-_get_int: getting integer : {int_val}")
-        print(f"Controller-_get_int: getting total sum : {total_value}")
 
         return response
 
@@ -123,15 +120,14 @@ class Controller:
 
             name = self.get_selected_worker()
             if self.submit["oper"] == "+":
-                print("trying to submit")
                 amount = int(self.view.cust_var.get())
                 self.set_working_data(self.workshop.add_tally(name, amount))
             elif self.submit["oper"] == "-":
                 amount = int(self.view.cust_var.get())
                 self.set_working_data(self.workshop.sub_tally(name, amount))
 
+            self.view.update_short_data()
             self.view._button_reseter()
-            self.view.update_long_data()
 
         # CLEAR TOTAL (DONE)
         elif response == 7:
@@ -139,64 +135,47 @@ class Controller:
             self.view.cust_var.set(0)
             self.view._button_reseter()
             self.submit["oper"] = ""
-        self.update_entry_boxes()
-
 
     # Gets current total from Model -> return current total integer
     def get_current_total(self):
-        current_total = self.model.current_total
-        return current_total
+        return self.model.current_total
 
     def get_set_current_total(self):
-        current_value = self.model.current_total
-        current_operand = self.submit["oper"]
-        print(f"CURRENT TOTAL = {current_value}")
-        print(f"CURRENT OPERAND = {self.get_operand()}")
-
-        self.view._set_cust_var(current_value)
+        self.view._set_cust_var(self.model.current_total)
 
     def get_operand(self):
         return self.submit["oper"]
 
-    # Gets current total from View -> returns updated amount to View
-    def get_total(self):
-        pass
-
     # Gets selected worker from view.listbox -> returns name of 'Selected Worker'
     def get_selected_worker(self):
-        lb_index = self.view.listbox.curselection()
-        print(lb_index)
-        return self.view.listbox.get(lb_index)
-
-    # Updates View(Entry boxes) with current data
-    def update_entry_boxes(self):
-        self.view.update_short_data()
+        return self.view.listbox.get(self.view.listbox.curselection())
 
     # Takes Workers tally value as input -> returns mood emoji
     def get_mood(self, amount):
+
         # if worker amount = 0, return basic mood
         if amount == 0:
             return self.model.MOOD_ICONS[0]
         index = 0
+
         # iterate through mood scale and compare value to worker tally
         for bracket in self.model.MOOD_SCALE:
+
             # if amount is more than mood scale value, test next bracket
             if amount >= bracket:
                 index += 1
+
             # if amount is less than mood scale value, get index and return emoji
             else:
-                mood = self.model.MOOD_ICONS[index]
-                return mood
+                return self.model.MOOD_ICONS[index]
 
     # Takes Controllers "Working Data" (dict) -> Returns sorted dict(descending)
     def tally_sort(self):
-        data = self.working_data
-        data_desc =sorted(data.items(), key=operator.itemgetter(1),reverse=True)
+        data_desc = sorted(self.working_data.items(), key=operator.itemgetter(1),reverse=True)
         sorted_workers = {}
+
         for item in data_desc:
-            name = item[0]
-            tally = item[1]
-            sorted_workers[name] = tally
+            sorted_workers[item[0]] = item[1]
         return sorted_workers
 
     # Initialize View's mainloop()

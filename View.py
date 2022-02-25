@@ -51,8 +51,6 @@ class View(tk.Tk):
         self._make_widgets()
         self.current_total = 0
 
-        self.update_short_data()
-
 
     # Creates master widget container in view
     def _make_main_frame(self):
@@ -71,17 +69,8 @@ class View(tk.Tk):
             self.lb_workers.insert(END, worker)
         self.listbox = self.lb_workers
 
-        if self.last_selection == "":
-            self._selection_cache()
-            self.listbox.selection_anchor(0)
-            self.listbox.select_set(tk.ANCHOR, 0)
-            self.last_selection = self.controller.get_selected_worker()
-            print("Selection test part A")
-        else:
-            print(self.last_selection)
-            # self.listbox.selection_anchor(sel_index)
-            # self.listbox.selet_set(tk.ANCHOR, sel_index)
-            print("selection test Part B")
+        self.listbox.selection_anchor(0)
+        self.listbox.select_set(tk.ANCHOR, 0)
 
 # =================== Widget and View creation ===================== #
 
@@ -196,17 +185,6 @@ class View(tk.Tk):
         self.btn_adder.config(state=tk.ACTIVE)
         self.btn_subber.config(state=tk.ACTIVE)
 
-    def _selection_cache(self):
-        if self.last_selection == "":
-            print("No Last Selection")
-            return
-        else:
-            index = 0
-            for worker in self.workers:
-                index += 1
-                if worker == self.last_selection:
-                    return (index-1)
-
     def _make_worker_display(self, workers):
         # Create outer frame for worker data display
         outer_frame = tk.Frame(self._container, width=360, height=300,
@@ -219,13 +197,14 @@ class View(tk.Tk):
         inner_frame = tk.Frame(outer_frame, background=self.BG_COLOR)
         inner_frame.pack()
 
+
         # worker counter
         self.workers_in_row = 0
 
         # sort workers by Tally amount
         sorted_workers = self.controller.tally_sort()
         #worker display iterator
-        print(sorted_workers)
+        print(f"View: 206: sorted workers = {sorted_workers}")
         for worker in sorted_workers:
 
             if self.workers_in_row == self.WORKERS_ROW_COUNT:
@@ -254,21 +233,25 @@ class View(tk.Tk):
 # =================== Custom Entry Variale Functions =================== #
 
     def _get_cust_var(self):
-        print("returning custom var")
         return self.cust_var.get()
 
     def _set_cust_var(self, value):
-        print("Setting custom var entry")
         self.cust_var.set(value)
 
 # ================== Data Updating Functions =================== #
 
     # Updates shorthand data (Value display labels)
+    # Used to update, present, and save changes to worker totals ie. Submit, reset, clear
     def update_short_data(self):
         # pull new "temporary" total from controller -> send to display label
-        pass
+        self._make_worker_display(workers=self.controller.fetch_working_data())
+        # Reset temporary totals
+        self.controller.response_operator(response=7)
+        # Send database save request to controller
+        self.controller.request_save()
 
     # Updates long term data values (worker selector and lower display) -> sends save request to controller
+    # Used to Add / Delete workers from workshop
     def update_long_data(self):
         # Update worker selector screen
         self._make_worker_selector(workers=self.controller.fetch_worker_names())
@@ -277,9 +260,6 @@ class View(tk.Tk):
         # Send database save request to controller
         self.controller.request_save()
 
-    def reset_view(self):
-        pass
-
     def initialize_view(self):
         self._make_worker_selector(workers=self.controller.fetch_worker_names())
         self._make_worker_display(workers=self.controller.fetch_working_data())
@@ -287,7 +267,6 @@ class View(tk.Tk):
     def color_change(self):
         new_color=(askcolor(title="Tkinter Color Chooser"))
         self.BG_COLOR = new_color[1]
-        self.reset_view()
 
     def main(self):
         self.mainloop()
