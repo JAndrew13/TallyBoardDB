@@ -66,6 +66,20 @@ class Controller:
             response = Model.decoder(self, code=button_text)
             self.response_operator(response=response)
 
+    def freeze_worker(self, state, worker_name):
+        if state == "freeze":
+            # change color of display texts
+            # add to frozen list
+            pass
+        elif state == "unfreeze":
+            # restore font color
+            # remove from frozen list
+            pass
+
+        # reset view
+        self.view.update_long_data()
+
+
     # Gets integer from button code
     def _get_int(self, code):
         int_test = [item for item in code.split("-")]
@@ -96,6 +110,7 @@ class Controller:
             if len(self.view.name_var.get())>0:
                 name = self.view.name_var.get()
                 self.set_working_data(self.workshop.add_worker(name))
+                self.view.worker_outer_frame.destroy()
                 self.view.update_long_data()
             else:
                 print("Error: No name entered")

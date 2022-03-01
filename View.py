@@ -187,40 +187,38 @@ class View(tk.Tk):
 
     def _make_worker_display(self, workers):
         # Create outer frame for worker data display
-        outer_frame = tk.Frame(self._container, width=360, height=300,
-                               highlightthickness=3,
-                               highlightbackground=self.BG_COLOR,
-                               background=self.BG_COLOR)
-        outer_frame.place(x=10, y=270)
+        self.worker_outer_frame = \
+            tk.Frame(self._container, width=365, height=265, background=self.FRAME_TEST)
+        self.worker_outer_frame.place(x=10, y=270)
 
-        # Create inner frame for worker displays
-        inner_frame = tk.Frame(outer_frame, background=self.BG_COLOR)
-        inner_frame.pack()
-
-
-        # worker counter
-        self.workers_in_row = 0
-
-        # sort workers by Tally amount
         sorted_workers = self.controller.tally_sort()
-        #worker display iterator
-        print(f"View: 206: sorted workers = {sorted_workers}")
+
+        unfrozen = 'freeze'
+        frozen = 'unfreeze'
+
         for worker in sorted_workers:
+            print(worker)
+            # Create inner frame for worker displays
+            row_frame = tk.Frame(self.worker_outer_frame, height=25, width=365, background=self.BG_COLOR,)
+            row_frame.pack(side="top")
 
-            if self.workers_in_row == self.WORKERS_ROW_COUNT:
-                inner_frame = tk.Frame(outer_frame, background=self.BG_COLOR, highlightthickness=0)
-                inner_frame.pack()
+        # Worker Display Widgets
+            # Worker Name
+            name_lbl = ttk.Label(row_frame, text=worker, font=self.FONT_BOLD, background=self.BG_COLOR, anchor='w', width=10)
+            name_lbl.pack(side='left', padx=2, pady=3)
 
-                self.workers_in_row = 0
+            # Worker Tally
+            tally_lbl = ttk.Label(row_frame, text=f"${sorted_workers[worker]}", font=self.FONT_TITLE,
+                                  background=self.BG_COLOR, anchor='w', width=8)
+            tally_lbl.pack(side='left', padx=6, pady=2)
 
-            name_lbl = ttk.Label(inner_frame, text=worker, font=self.FONT_BOLD, background=self.BG_COLOR, anchor='w', width=8)
-            name_lbl.pack(side='left', padx=2, pady=5)
-            tally_lbl = ttk.Label(inner_frame,text=f"${workers[worker]}", font=self.FONT_TITLE, background=self.BG_COLOR, anchor='w', width=8)
-            tally_lbl.pack(side='left', padx=2, pady=2)
-            temp_lbl = ttk.Label(inner_frame, text=f"{self.controller.get_mood(workers[worker])}",font=self.FONT_TITLE, background=self.BG_COLOR, anchor='w', width=8)
-            temp_lbl.pack(side='left', padx=2, pady=2)
+            # Worker Tally Reset
+            reset_btn = ttk.Button(row_frame, text='reset', width=13 )
+            reset_btn.pack(side='left', pady=2)
 
-            self.workers_in_row += 1
+            # Worker Freeze
+            bench_chk = tk.Button(row_frame, text=unfrozen, width=9, bg='skyblue')
+            bench_chk.pack(side='left', padx=4, pady=2)
 
 # ================== Entry Box text Validators =================== #
 
@@ -256,13 +254,14 @@ class View(tk.Tk):
         # Update worker selector screen
         self._make_worker_selector(workers=self.controller.fetch_worker_names())
         # Update lower display for worker information
-        self._make_worker_display(workers=self.controller.fetch_working_data())
+        self.worker_outer_frame.destroy()
+        self._make_worker_display(workers=self.controller.fetch_worker_names())
         # Send database save request to controller
         self.controller.request_save()
 
     def initialize_view(self):
         self._make_worker_selector(workers=self.controller.fetch_worker_names())
-        self._make_worker_display(workers=self.controller.fetch_working_data())
+        self._make_worker_display(workers=self.controller.fetch_worker_names())
 
     def color_change(self):
         new_color=(askcolor(title="Tkinter Color Chooser"))
