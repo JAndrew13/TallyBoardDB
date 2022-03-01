@@ -24,10 +24,13 @@ class View(tk.Tk):
     FONT_BOLD = ("Veranda", 12, "bold")
     FONT_TITLE = ("Veranda", 14, "bold")
     FONT_SMALL = ("Veranda", 8, "bold")
+    FONT_FROZEN_LG = ("Veranda", 14, "bold")
+    FONT_FROZEN_BOLD = ("Veranda", 12, "bold")
 
+    # Colors
     FRAME_TEST = "blue"
     BG_COLOR = "Orange2"
-
+    FROZEN_COL = "blue"
     # Main View Class
     def __init__(self, controller):
         super().__init__()
@@ -168,7 +171,7 @@ class View(tk.Tk):
         self.clr_btn = ttk.Button(self.settings_frm, text="Color Picker",  command=lambda: self.color_change())
         self.clr_btn.pack()
 
-    def _button_factory(self, container, text, width, side, button_name, *args,**kwargs):
+    def _button_factory(self, container, text, width, side, button_name):
         btn = ttk.Button(container, text=text, width=width, command=
                          lambda button=button_name: self.controller.action_button(button_name))
         btn.pack(side=side, padx=2, pady=2)
@@ -188,7 +191,7 @@ class View(tk.Tk):
     def _make_worker_display(self, workers):
         # Create outer frame for worker data display
         self.worker_outer_frame = \
-            tk.Frame(self._container, width=365, height=265, background=self.FRAME_TEST)
+            tk.Frame(self._container, width=365, height=265, background=self.BG_COLOR)
         self.worker_outer_frame.place(x=10, y=270)
 
         sorted_workers = self.controller.tally_sort()
@@ -217,8 +220,9 @@ class View(tk.Tk):
             reset_btn.pack(side='left', pady=2)
 
             # Worker Freeze
-            bench_chk = tk.Button(row_frame, text=unfrozen, width=9, bg='skyblue')
-            bench_chk.pack(side='left', padx=4, pady=2)
+            self.bench_chk = tk.Button(row_frame, text=unfrozen, width=9, bg='skyblue', name=worker,
+                                  command=lambda name=worker: self.freeze_worker(name))
+            self.bench_chk.pack(side='left', padx=4, pady=2)
 
 # ================== Entry Box text Validators =================== #
 
@@ -229,6 +233,12 @@ class View(tk.Tk):
             return char.isalpha()
 
 # =================== Custom Entry Variale Functions =================== #
+
+    def freeze_worker(self, name):
+        # add worker name to frozen workers list
+        # resort list with frozen workers at bottem
+        # save sorted list
+        # refresh view (update long data)
 
     def _get_cust_var(self):
         return self.cust_var.get()
@@ -262,6 +272,8 @@ class View(tk.Tk):
     def initialize_view(self):
         self._make_worker_selector(workers=self.controller.fetch_worker_names())
         self._make_worker_display(workers=self.controller.fetch_worker_names())
+
+# =================== App Modifiers ======================== #
 
     def color_change(self):
         new_color=(askcolor(title="Tkinter Color Chooser"))

@@ -9,6 +9,7 @@ class Model:
 
     current_total = 0
     current_operand = ""
+    frozen_workers = []
 
     # operand-Button display labels
     OPERANDS = {1: "+", 2: "-"}
