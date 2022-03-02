@@ -67,19 +67,8 @@ class Controller:
             response = Model.decoder(self, code=button_text)
             self.response_operator(response=response)
 
-    def freeze_worker(self, state, worker_name):
-        if state == "freeze":
-            # change color of display texts
-            # add to frozen list
-            pass
-        elif state == "unfreeze":
-            # restore font color
-            # remove from frozen list
-            pass
-
         # reset view
         self.view.update_long_data()
-
 
     # Gets integer from button code
     def _get_int(self, code):
@@ -147,7 +136,7 @@ class Controller:
 
         # CLEAR TOTAL (DONE)
         elif response == 7:
-            self.model.reset_total(self)
+            Model.reset_total(self)
             self.view.cust_var.set(0)
             self.view._button_reseter()
             self.submit["oper"] = ""
