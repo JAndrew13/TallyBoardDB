@@ -18,6 +18,9 @@ class View(tk.Tk):
     # Worker Display Factory Variables
     WORKERS_ROW_COUNT = 1
 
+    # Worker Selector Default
+
+
 
     # Window Styling Variables
     FONT_BODY = ("Veranda", 12)
@@ -61,7 +64,7 @@ class View(tk.Tk):
         self._container = tk.Frame(self, background=self.BG_COLOR)
         self._container.pack(side="top", fill="both", expand=True, padx=self.PAD, pady=self.PAD)
 
-    def _make_worker_selector(self, workers):
+    def _make_worker_selector(self, workers, selection):
         frm = ttk.Frame(self._container)
         frm.place(x=10, y=50)
 
@@ -73,8 +76,8 @@ class View(tk.Tk):
             self.lb_workers.insert(END, worker)
         self.listbox = self.lb_workers
 
-        self.listbox.selection_anchor(0)
-        self.listbox.select_set(tk.ANCHOR, 0)
+        self.listbox.selection_anchor(selection)
+        self.listbox.select_set(tk.ANCHOR, selection)
 
 # =================== Widget and View creation ===================== #
 
@@ -190,7 +193,6 @@ class View(tk.Tk):
         self.btn_subber.config(state=tk.ACTIVE)
 
     def _display_factory(self, name, tally, status):
-        print(f"status: {status}")
         if status == "freeze":
             color = self.UNFROZEN_COL
         else:
@@ -278,15 +280,18 @@ class View(tk.Tk):
     # Used to Add / Delete workers from workshop
     def update_long_data(self):
         # Update worker selector screen
-        self._make_worker_selector(workers=self.controller.fetch_worker_names())
+        self._make_worker_selector(workers=self.controller.fetch_worker_names(),
+                                   selection=self.controller.get_selected_worker_index())
+
         # Update lower display for worker information
         self.worker_outer_frame.destroy()
         self._make_worker_display(workers=self.controller.fetch_worker_names())
+
         # Send database save request to controller
         self.controller.request_save()
 
     def initialize_view(self):
-        self._make_worker_selector(workers=self.controller.fetch_worker_names())
+        self._make_worker_selector(workers=self.controller.fetch_worker_names(), selection=0)
         self._make_worker_display(workers=self.controller.fetch_worker_names())
 
 # =================== App Modifiers ======================== #

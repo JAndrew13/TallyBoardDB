@@ -109,7 +109,7 @@ class Controller:
         # DELETE WORKERS
         elif response == 4:
             if len(self.fetch_worker_names())>0:
-                worker_name = self.get_selected_worker()
+                worker_name = self.get_selected_worker_name()
                 self.set_working_data(self.workshop.del_worker(worker_name))
                 self.view.update_long_data()
             else:
@@ -123,7 +123,7 @@ class Controller:
         # SUBMIT TOTAL
         elif response == 6:
 
-            name = self.get_selected_worker()
+            name = self.get_selected_worker_name()
             if self.submit["oper"] == "+":
                 amount = int(self.view.cust_var.get())
                 self.set_working_data(self.workshop.add_tally(name, amount))
@@ -157,8 +157,14 @@ class Controller:
         return self.submit["oper"]
 
     # Gets selected worker from view.listbox -> returns name of 'Selected Worker'
-    def get_selected_worker(self):
+    def get_selected_worker_name(self):
+        # Returns name of selected worker
         return self.view.listbox.get(self.view.listbox.curselection())
+
+    def get_selected_worker_index(self):
+        # returns the listbox index of the selected worker
+        return self.view.listbox.curselection()[0]
+
 
     # Takes Workers tally value as input -> returns mood emoji
     def get_mood(self, amount):
@@ -179,17 +185,17 @@ class Controller:
             else:
                 return self.model.MOOD_ICONS[index]
 
-    # Takes Controllers "Working Data" (dict) -> Returns sorted dict(descending)
+    # Takes Controllers "Working Data" (dict) -> Returns sorted dict(ascending)
     def tally_sort(self):
-        data_desc = sorted(self.working_data.items(), key=operator.itemgetter(1),reverse=True)
+        data_ascd = sorted(self.working_data.items(), key=operator.itemgetter(1))
         sorted_workers = {}
 
-        for item in data_desc:
+        for item in data_ascd:
             if item[0] in self.frozen_workers:
                 pass
             else:
                 sorted_workers[item[0]] = item[1]
-        for item in data_desc:
+        for item in data_ascd:
             if item[0] not in sorted_workers:
                 sorted_workers[item[0]] = item[1]
             else:
