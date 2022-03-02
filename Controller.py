@@ -4,13 +4,14 @@ import operator
 
 
 class Controller:
-
     # Startup Controller and initialize -> View, Model, Workshop
     def __init__(self):
         self.model = Model
         self.view = View(self)
         self.workshop = Workshop(self, self.model.load())
         self.submit = {"name": "", "amount": "", "oper": ""}
+        self.frozen_workers = {}
+
 
     # Initializes Application Data: Check for saved file / Creates New File
     # Loads Existing file -> Sets "Working Dictionary" as loaded file data
@@ -190,7 +191,15 @@ class Controller:
         sorted_workers = {}
 
         for item in data_desc:
-            sorted_workers[item[0]] = item[1]
+            if item[0] in self.frozen_workers:
+                pass
+            else:
+                sorted_workers[item[0]] = item[1]
+        for item in data_desc:
+            if item[0] not in sorted_workers:
+                sorted_workers[item[0]] = item[1]
+            else:
+                pass
         return sorted_workers
 
     # Initialize View's mainloop()

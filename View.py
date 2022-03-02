@@ -30,7 +30,9 @@ class View(tk.Tk):
     # Colors
     FRAME_TEST = "blue"
     BG_COLOR = "Orange2"
-    FROZEN_COL = "blue"
+    UNFROZEN_COL = "skyblue"
+    FROZEN_COL = "tomato1"
+
     # Main View Class
     def __init__(self, controller):
         super().__init__()
@@ -53,7 +55,6 @@ class View(tk.Tk):
         self._make_main_frame()
         self._make_widgets()
         self.current_total = 0
-
 
     # Creates master widget container in view
     def _make_main_frame(self):
@@ -188,6 +189,30 @@ class View(tk.Tk):
         self.btn_adder.config(state=tk.ACTIVE)
         self.btn_subber.config(state=tk.ACTIVE)
 
+    def _display_factory(self, name, tally, status):
+        print(f"status: {status}")
+        if status == "freeze":
+            color = self.UNFROZEN_COL
+        else:
+            color = self.FROZEN_COL
+
+
+    # Create inner frame for worker display widgets
+        self.row_frame = tk.Frame(self.worker_outer_frame, height=25, width=365, background=self.BG_COLOR, )
+        self.row_frame.pack(side="top")
+    # Worker Name
+        name_lbl = ttk.Label(self.row_frame, text=name, font=self.FONT_BOLD, background=self.BG_COLOR, anchor='w', width=10)
+        name_lbl.pack(side='left', padx=2, pady=3)
+    # Worker Tally
+        tally_lbl = ttk.Label(self.row_frame, text=tally, font=self.FONT_TITLE, background=self.BG_COLOR, anchor='w', width=8)
+        tally_lbl.pack(side='left', padx=6, pady=2)
+    # Worker Tally Reset
+        reset_btn = ttk.Button(self.row_frame, text='reset', width=13)
+        reset_btn.pack(side='left', pady=2)
+    # Worker Freeze
+        self.bench_chk = tk.Button(self.row_frame, text=status, width=9, bg=color, command=lambda: self.freeze_worker(name, tally))
+        self.bench_chk.pack(side='left', padx=4, pady=2)
+
     def _make_worker_display(self, workers):
         # Create outer frame for worker data display
         self.worker_outer_frame = \
@@ -200,29 +225,14 @@ class View(tk.Tk):
         frozen = 'unfreeze'
 
         for worker in sorted_workers:
-            print(worker)
-            # Create inner frame for worker displays
-            row_frame = tk.Frame(self.worker_outer_frame, height=25, width=365, background=self.BG_COLOR,)
-            row_frame.pack(side="top")
+            name = worker
+            tally = sorted_workers[worker]
+            if name in self.controller.frozen_workers:
+                status = frozen
+            else:
+                status = unfrozen
+            self._display_factory(name, tally, status)
 
-        # Worker Display Widgets
-            # Worker Name
-            name_lbl = ttk.Label(row_frame, text=worker, font=self.FONT_BOLD, background=self.BG_COLOR, anchor='w', width=10)
-            name_lbl.pack(side='left', padx=2, pady=3)
-
-            # Worker Tally
-            tally_lbl = ttk.Label(row_frame, text=f"${sorted_workers[worker]}", font=self.FONT_TITLE,
-                                  background=self.BG_COLOR, anchor='w', width=8)
-            tally_lbl.pack(side='left', padx=6, pady=2)
-
-            # Worker Tally Reset
-            reset_btn = ttk.Button(row_frame, text='reset', width=13 )
-            reset_btn.pack(side='left', pady=2)
-
-            # Worker Freeze
-            self.bench_chk = tk.Button(row_frame, text=unfrozen, width=9, bg='skyblue', name=worker,
-                                  command=lambda name=worker: self.freeze_worker(name))
-            self.bench_chk.pack(side='left', padx=4, pady=2)
 
 # ================== Entry Box text Validators =================== #
 
@@ -234,11 +244,17 @@ class View(tk.Tk):
 
 # =================== Custom Entry Variale Functions =================== #
 
-    def freeze_worker(self, name):
-        # add worker name to frozen workers list
-        # resort list with frozen workers at bottem
-        # save sorted list
+    def freeze_worker(self, name, tally):
+        if name in self.controller.frozen_workers:
+            self.controller.frozen_workers.pop(name)
+        else:
+            # add worker name to controllers frozen list
+            self.controller.frozen_workers[name] = int(tally)
+        # Sort worker display list wiht new data
+        self.controller.tally_sort()
+
         # refresh view (update long data)
+        self.update_long_data()
 
     def _get_cust_var(self):
         return self.cust_var.get()
