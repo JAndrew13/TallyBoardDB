@@ -207,7 +207,7 @@ class View(tk.Tk):
         tally_lbl = ttk.Label(self.row_frame, text=tally, font=self.FONT_TITLE, background=self.BG_COLOR, anchor='w', width=8)
         tally_lbl.pack(side='left', padx=6, pady=2)
     # Worker Tally Reset
-        reset_btn = ttk.Button(self.row_frame, text='reset', width=13)
+        reset_btn = ttk.Button(self.row_frame, text='reset', width=13, command=lambda: self.controller.clear_individual_tally(name, tally))
         reset_btn.pack(side='left', pady=2)
     # Worker Freeze
         self.bench_chk = tk.Button(self.row_frame, text=status, width=9, bg=color, command=lambda: self.freeze_worker(name, tally))

@@ -141,6 +141,11 @@ class Controller:
             self.view._button_reseter()
             self.submit["oper"] = ""
 
+    def clear_individual_tally(self, name, tally):
+        self.set_working_data(self.workshop.sub_tally(name, tally))
+        print(f"{name}'s tally is cleared")
+        self.view.update_long_data()
+
     # Gets current total from Model -> return current total integer
     def get_current_total(self):
         return self.model.current_total
