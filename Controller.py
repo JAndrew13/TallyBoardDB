@@ -1,4 +1,4 @@
-from Model import Model, Workshop
+from Model import Model, Workshop, Config
 from View import View
 import operator
 
@@ -6,6 +6,7 @@ import operator
 class Controller:
     # Startup Controller and initialize -> View, Model, Workshop
     def __init__(self):
+        self.config = Config(self)
         self.model = Model
         self.view = View(self)
         self.workshop = Workshop(self, self.model.load())
@@ -44,8 +45,12 @@ class Controller:
 
     # pull working data and request DB save via Model
     def request_save(self):
+    # Save data to databse file
         data = self.working_data
         self.model.save(data)
+
+    # Save config data to config file
+        self.save_config()
 
     # Grabs working data and returns a list of names
     def fetch_worker_names(self):
@@ -164,26 +169,6 @@ class Controller:
         # returns the listbox index of the selected worker
         return self.view.listbox.curselection()[0]
 
-
-    # Takes Workers tally value as input -> returns mood emoji
-    def get_mood(self, amount):
-
-        # if worker amount = 0, return basic mood
-        if amount == 0:
-            return self.model.MOOD_ICONS[0]
-        index = 0
-
-        # iterate through mood scale and compare value to worker tally
-        for bracket in self.model.MOOD_SCALE:
-
-            # if amount is more than mood scale value, test next bracket
-            if amount >= bracket:
-                index += 1
-
-            # if amount is less than mood scale value, get index and return emoji
-            else:
-                return self.model.MOOD_ICONS[index]
-
     # Takes Controllers "Working Data" (dict) -> Returns sorted dict(ascending)
     def tally_sort(self):
         data_ascd = sorted(self.working_data.items(), key=operator.itemgetter(1))
@@ -201,15 +186,33 @@ class Controller:
                 pass
         return sorted_workers
 
+    def update_view(self):
+        self.view.update_long_data()
+
+
     # Initialize View's mainloop()
     def main(self):
+        self.load_config()
         self.view.main()
+
+    def save_config(self):
+        for name in self.frozen_workers:
+            print(f"CONTR: self.frozen : {name}")
+
+        # save frozen workers to ini
+        # save bg to ini
+
+    def load_config(self):
+        pass
+
+
 
 if __name__ == "__main__":
 
     Tallyboard = Controller()
     Tallyboard.Initialize()
     Tallyboard.main()
+
 
 
 

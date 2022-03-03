@@ -255,11 +255,12 @@ class View(tk.Tk):
         else:
             # add worker name to controllers frozen list
             self.controller.frozen_workers[name] = int(tally)
-        # Sort worker display list wiht new data
+
+        # Sort worker display list with new data
         self.controller.tally_sort()
 
         # refresh view (update long data)
-        self.update_long_data()
+        self.controller.update_view()
 
     def _get_cust_var(self):
         return self.cust_var.get()
@@ -292,6 +293,7 @@ class View(tk.Tk):
 
         # Send database save request to controller
         self.controller.request_save()
+        print(f"CONTROLLER: Frozen workers: {self.controller.frozen_workers}")
 
     def initialize_view(self):
         self._make_worker_selector(workers=self.controller.fetch_worker_names())
