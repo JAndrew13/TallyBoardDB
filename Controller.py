@@ -59,7 +59,6 @@ class Controller:
         print(f'action item: {button_text} clicked')
         if "INT" in button_text:
             new_total = self._get_int(button_text)
-            print(new_total)
             self.get_set_current_total()
             response = 5
             self.response_operator(response=response)
@@ -68,7 +67,7 @@ class Controller:
             self.response_operator(response=response)
 
         # reset view
-        self.view.update_long_data()
+        self.view.update_short_data()
 
     # Gets integer from button code
     def _get_int(self, code):

@@ -36,6 +36,7 @@ class View(tk.Tk):
     UNFROZEN_COL = "skyblue"
     FROZEN_COL = "tomato1"
 
+
     # Main View Class
     def __init__(self, controller):
         super().__init__()
@@ -64,7 +65,9 @@ class View(tk.Tk):
         self._container = tk.Frame(self, background=self.BG_COLOR)
         self._container.pack(side="top", fill="both", expand=True, padx=self.PAD, pady=self.PAD)
 
-    def _make_worker_selector(self, workers, selection):
+    def _make_worker_selector(self, workers):
+        selection = 0
+
         frm = ttk.Frame(self._container)
         frm.place(x=10, y=50)
 
@@ -270,18 +273,18 @@ class View(tk.Tk):
     # Used to update, present, and save changes to worker totals ie. Submit, reset, clear
     def update_short_data(self):
         # pull new "temporary" total from controller -> send to display label
+        self.worker_outer_frame.destroy()
         self._make_worker_display(workers=self.controller.fetch_working_data())
-        # Reset temporary totals
-        self.controller.response_operator(response=7)
+
         # Send database save request to controller
         self.controller.request_save()
 
     # Updates long term data values (worker selector and lower display) -> sends save request to controller
     # Used to Add / Delete workers from workshop
     def update_long_data(self):
+
         # Update worker selector screen
-        self._make_worker_selector(workers=self.controller.fetch_worker_names(),
-                                   selection=self.controller.get_selected_worker_index())
+        self._make_worker_selector(workers=self.controller.fetch_worker_names())
 
         # Update lower display for worker information
         self.worker_outer_frame.destroy()
@@ -291,7 +294,7 @@ class View(tk.Tk):
         self.controller.request_save()
 
     def initialize_view(self):
-        self._make_worker_selector(workers=self.controller.fetch_worker_names(), selection=0)
+        self._make_worker_selector(workers=self.controller.fetch_worker_names())
         self._make_worker_display(workers=self.controller.fetch_worker_names())
 
 # =================== App Modifiers ======================== #
