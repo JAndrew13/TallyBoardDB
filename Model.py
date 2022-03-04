@@ -110,13 +110,13 @@ class Workshop:
         return (self.data[name])
 
 
-
+# Config Class handless and operates the Config.ini file, app preferences, and settings
 class Config:
     CONFIG_FILE_LOC = "config.ini"
 
     def __init__(self):
         self.config = configparser.ConfigParser()
-        self.config.read(CONFIG_FILE_LOC)
+        self.config.read(self.CONFIG_FILE_LOC)
 
         self.bg_color = ""
         self.frozen = []
@@ -172,7 +172,7 @@ class Config:
 
         self.config['settings']['BG_COLOR'] = color
         self.config.set('data', 'bg_color', color)
-        with open(CONFIG_FILE_LOC, 'w') as configfile:
+        with open(self.CONFIG_FILE_LOC, 'w') as configfile:
             self.config.write(configfile)
         self.bg_color = color
 
@@ -184,5 +184,5 @@ class Config:
         update = update[:-2]
 
         self.config.set('data', 'frozen', update)
-        with open(CONFIG_FILE_LOC, 'w') as configfile:
+        with open(self.CONFIG_FILE_LOC, 'w') as configfile:
             self.config.write(configfile)

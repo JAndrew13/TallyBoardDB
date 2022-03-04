@@ -6,7 +6,7 @@ import operator
 class Controller:
     # Startup Controller and initialize -> View, Model, Workshop
     def __init__(self):
-        self.config = Config(self)
+        self.config = Config()
         self.model = Model
         self.view = View(self)
         self.workshop = Workshop(self, self.model.load())
@@ -31,8 +31,13 @@ class Controller:
         self.set_working_data(data)
         # Set current_total to 0
         self.model.current_total = 0
+
+        self.config.load()
+        self.view._set_bg_color(self.config.get_bg())
+
         # Initializes startup view
         self.view.initialize_view()
+
 
     # Takes new data (dict) -> Updates Controller's "Working Data" (dict)
     def set_working_data(self, new_data):
@@ -192,27 +197,13 @@ class Controller:
 
     # Initialize View's mainloop()
     def main(self):
-        #TODO load config
         self.view.main()
 
     def save_config(self):
-        frozen = []
-        for name in self.frozen_workers:
-            frozen.append(name)
-        if len(frozen) == 0:
-            pass
-        else:
-            # save frozen workers to ini
-            self.config.set_frozen(frozen)
 
-
-            # save bg to ini
 
     def load_config_frozen(self):
-        frozen_names = self.config.get_frozen()
-        for name in frozen_names:
-            if name in self.working_data:
-                self.frozen_workers[name] = self.working_data[name]
+        pass
 
 
 

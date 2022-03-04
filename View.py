@@ -18,10 +18,6 @@ class View(tk.Tk):
     # Worker Display Factory Variables
     WORKERS_ROW_COUNT = 1
 
-    # Worker Selector Default
-
-
-
     # Window Styling Variables
     FONT_BODY = ("Veranda", 12)
     FONT_BOLD = ("Veranda", 12, "bold")
@@ -32,7 +28,7 @@ class View(tk.Tk):
 
     # Colors
     FRAME_TEST = "blue"
-    BG_COLOR = "Orange2"
+    BG_COLOR = "orange2"
     UNFROZEN_COL = "skyblue"
     FROZEN_COL = "tomato1"
 
@@ -290,7 +286,6 @@ class View(tk.Tk):
 
         # Update lower display for worker information
         self.worker_outer_frame.destroy()
-        self.controller.load_config_frozen()
         self._make_worker_display(workers=self.controller.fetch_worker_names())
 
         # Send database save request to controller
@@ -302,10 +297,14 @@ class View(tk.Tk):
         self._make_worker_display(workers=self.controller.fetch_worker_names())
 
 # =================== App Modifiers ======================== #
+    # sets View's Default BG Color
+    def _set_bg_color(self, color):
+        self.BG_COLOR = color
 
     def color_change(self):
         new_color=(askcolor(title="Tkinter Color Chooser"))
-        self.BG_COLOR = new_color[1]
+
+
 
     def main(self):
         self.mainloop()
