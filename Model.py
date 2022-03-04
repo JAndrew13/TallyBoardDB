@@ -145,5 +145,7 @@ class Config:
             if name in self.frozen:
                 pass
             else:
-                self.config['data']['frozen'] = self.frozen
                 self.frozen.append(name)
+                self.config.set('data','frozen', f"{name}")
+                with open('config.ini', 'w') as configfile:
+                    self.config.write(configfile)

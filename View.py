@@ -224,6 +224,7 @@ class View(tk.Tk):
             tk.Frame(self._container, width=365, height=265, background=self.BG_COLOR)
         self.worker_outer_frame.place(x=10, y=270)
 
+
         sorted_workers = self.controller.tally_sort()
 
         unfrozen = 'freeze'
@@ -289,6 +290,7 @@ class View(tk.Tk):
 
         # Update lower display for worker information
         self.worker_outer_frame.destroy()
+        self.controller.load_config_frozen()
         self._make_worker_display(workers=self.controller.fetch_worker_names())
 
         # Send database save request to controller

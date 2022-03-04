@@ -192,18 +192,28 @@ class Controller:
 
     # Initialize View's mainloop()
     def main(self):
-        self.load_config()
+        #TODO load config
         self.view.main()
 
     def save_config(self):
+        frozen = []
         for name in self.frozen_workers:
-            print(f"CONTR: self.frozen : {name}")
+            frozen.append(name)
+        if len(frozen) == 0:
+            pass
+        else:
+            # save frozen workers to ini
+            self.config.set_frozen(frozen)
 
-        # save frozen workers to ini
-        # save bg to ini
 
-    def load_config(self):
-        pass
+            # save bg to ini
+
+    def load_config_frozen(self):
+        frozen_names = self.config.get_frozen()
+        for name in frozen_names:
+            if name in self.working_data:
+                self.frozen_workers[name] = self.working_data[name]
+
 
 
 
