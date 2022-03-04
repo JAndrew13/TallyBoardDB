@@ -4,6 +4,8 @@ import configparser
 # Communicates with Controller and DataBase as intermediary
 # Basic calls: Load, Save, Checker(init)
 
+
+
 class Model:
     DATABASE_FILENAME = "Database.json"
     CONFIG_FILENAME = "config.ini"
@@ -108,44 +110,79 @@ class Workshop:
         return (self.data[name])
 
 
+
 class Config:
-    def __init__(self, controller):
-        self.controller = controller
-        print('config object loaded!')
+    CONFIG_FILE_LOC = "config.ini"
+
+    def __init__(self):
         self.config = configparser.ConfigParser()
-        self.config.read('config.ini')
+        self.config.read(CONFIG_FILE_LOC)
 
         self.bg_color = ""
         self.frozen = []
 
+    # Loads existing Config Data to self
     def load(self):
         # Load App Settings from .ini and save to Config object
         self.bg_color = self.config['settings']['BG_COLOR']
+        print(self.bg_color)
 
         # Load saved data from .ini and save to Config Object
         frozen_data = self.config['data']['frozen']
         self.frozen = [name for name in frozen_data.split(',')]
+        print(self.frozen)
 
+    def save(self):
+        update = ""
+        for name in self.frozen:
+            update += f"{name}, "
+        update = update[:-2]
+        print(update)
+
+        self.config.set('data', 'frozen', update)
+        self.config.set('settings', 'bg_color', self.bg_color)
+
+        with open('testconfig.ini', 'w') as configfile:
+            self.config.write(configfile)
+
+    # returns saved BG color
     def get_bg(self):
         return self.bg_color
 
+    # returns list of frozen workers
     def get_frozen(self):
         return self.frozen
 
+    # Takes input of worker name and saves to config
+    def add_frozen(self, name):
+        self.frozen.append(name)
+        self.set_frozen()
+
+    # takes input of worker name and removes from config
+    def del_frozen(self, name):
+        if name in self.frozen:
+            self.frozen.pop(name)
+            self.set_frozen()
+        else:
+            print('Name not found!')
+            pass
+
     # Takes input of "color" and saves to .ini
     def set_bg(self, color):
+
         self.config['settings']['BG_COLOR'] = color
+        self.config.set('data', 'bg_color', color)
+        with open(CONFIG_FILE_LOC, 'w') as configfile:
+            self.config.write(configfile)
         self.bg_color = color
 
-    # takes list of [frozen_workers] and adds new items to .ini
-    def set_frozen(self, list):
-        # Take input and check if it exists in list
-        for name in list:
-            # if its already in the list, skip to next name
-            if name in self.frozen:
-                pass
-            else:
-                self.frozen.append(name)
-                self.config.set('data','frozen', f"{name}")
-                with open('config.ini', 'w') as configfile:
-                    self.config.write(configfile)
+    # takes input list of [frozen_workers] and adds new items to .ini
+    def set_frozen(self):
+        update = ""
+        for name in self.frozen:
+            update += f"{name}, "
+        update = update[:-2]
+
+        self.config.set('data', 'frozen', update)
+        with open(CONFIG_FILE_LOC, 'w') as configfile:
+            self.config.write(configfile)
