@@ -142,7 +142,7 @@ class Config:
         self.config.set('data', 'frozen', update)
         self.config.set('settings', 'bg_color', self.bg_color)
 
-        with open('testconfig.ini', 'w') as configfile:
+        with open(self.CONFIG_FILE_LOC, 'w') as configfile:
             self.config.write(configfile)
 
     # returns saved BG color
@@ -157,6 +157,7 @@ class Config:
     def add_frozen(self, name):
         self.frozen.append(name)
         self.set_frozen()
+
 
     # takes input of worker name and removes from config
     def del_frozen(self, name):

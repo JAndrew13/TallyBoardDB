@@ -13,7 +13,6 @@ class Controller:
         self.submit = {"name": "", "amount": "", "oper": ""}
         self.frozen_workers = {}
 
-
     # Initializes Application Data: Check for saved file / Creates New File
     # Loads Existing file -> Sets "Working Dictionary" as loaded file data
     def Initialize(self):
@@ -37,7 +36,6 @@ class Controller:
 
         # Initializes startup view
         self.view.initialize_view()
-
 
     # Takes new data (dict) -> Updates Controller's "Working Data" (dict)
     def set_working_data(self, new_data):
@@ -194,19 +192,20 @@ class Controller:
     def update_view(self):
         self.view.update_long_data()
 
-
     # Initialize View's mainloop()
     def main(self):
         self.view.main()
 
-    def save_config(self):
 
+# ====================== CONFIG FUNCTIONS ====================== #
+    def save_config(self):
+        pass
 
     def load_config_frozen(self):
         pass
 
-
-
+    def fetch_bg_color(self):
+        self.config.get_bg()
 
 if __name__ == "__main__":
 

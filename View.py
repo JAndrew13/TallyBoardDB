@@ -197,7 +197,6 @@ class View(tk.Tk):
         else:
             color = self.FROZEN_COL
 
-
     # Create inner frame for worker display widgets
         self.row_frame = tk.Frame(self.worker_outer_frame, height=25, width=365, background=self.BG_COLOR, )
         self.row_frame.pack(side="top")
@@ -211,8 +210,8 @@ class View(tk.Tk):
         reset_btn = ttk.Button(self.row_frame, text='reset', width=13, command=lambda: self.controller.clear_individual_tally(name, tally))
         reset_btn.pack(side='left', pady=2)
     # Worker Freeze
-        self.bench_chk = tk.Button(self.row_frame, text=status, width=9, bg=color, command=lambda: self.freeze_worker(name, tally))
-        self.bench_chk.pack(side='left', padx=4, pady=2)
+        self.freeze_btn = tk.Button(self.row_frame, text=status, width=9, bg=color, command=lambda: self.freeze_worker(name, tally))
+        self.freeze_btn.pack(side='left', padx=4, pady=2)
 
     def _make_worker_display(self, workers):
         # Create outer frame for worker data display
@@ -245,13 +244,14 @@ class View(tk.Tk):
             return char.isalpha()
 
 # =================== Custom Entry Variale Functions =================== #
-
+    # Controls response from "freeze" buttons
     def freeze_worker(self, name, tally):
         if name in self.controller.frozen_workers:
             self.controller.frozen_workers.pop(name)
         else:
             # add worker name to controllers frozen list
             self.controller.frozen_workers[name] = int(tally)
+            # config freeze
 
         # Sort worker display list with new data
         self.controller.tally_sort()
@@ -303,6 +303,7 @@ class View(tk.Tk):
 
     def color_change(self):
         new_color=(askcolor(title="Tkinter Color Chooser"))
+
 
 
 
