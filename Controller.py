@@ -122,9 +122,6 @@ class Controller:
         data = self.working_data
         self.model.save(data)
 
-    # Save config data to config file
-        self.save_config()
-
     # Grabs working data and returns a list of names
     def fetch_worker_names(self):
         worker_names = []
@@ -172,6 +169,8 @@ class Controller:
 
     # Updates hard data changes in the View
     def update_view(self):
+        # Sort worker display list with new data
+        self.tally_sort()
         self.view.update_long_data()
 
 # ====================== APP INITIALIZATION ===================== #
@@ -194,7 +193,14 @@ class Controller:
         # Set current_total to 0
         self.model.current_total = 0
 
+        print("loading config..")
         self.config.load()
+        self.config.check_current(self.working_data)
+        saved_frozen = self.config.get_frozen()
+        for name in saved_frozen:
+            self.frozen_workers[name] = self.workshop.get_Tally(name)
+        print("Success!")
+
         self.view._set_bg_color(self.config.get_bg())
 
         # Initializes startup view
@@ -205,12 +211,6 @@ class Controller:
         self.view.main()
 
 # ====================== CONFIG OPERATIONS ====================== #
-
-    def save_config(self):
-        pass
-
-    def load_config_frozen(self):
-        pass
 
     def fetch_bg_color(self):
         self.config.get_bg()

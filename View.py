@@ -227,7 +227,7 @@ class View(tk.Tk):
             tk.Frame(self._container, width=365, height=265, background=self.BG_COLOR)
         self.worker_outer_frame.place(x=10, y=270)
 
-
+        # Get all workers and pass through ascending sorter
         sorted_workers = self.controller.tally_sort()
 
         unfrozen = 'freeze'
@@ -236,7 +236,7 @@ class View(tk.Tk):
         for worker in sorted_workers:
             name = worker
             tally = sorted_workers[worker]
-            if name in self.controller.frozen_workers:
+            if name in self.controller.config.frozen:
                 status = frozen
             else:
                 status = unfrozen
@@ -244,12 +244,16 @@ class View(tk.Tk):
 
     # Controls response from workers "freeze" buttons
     def freeze_worker(self, name, tally):
+        # if the worker is already frozen, then unfreeze
         if name in self.controller.frozen_workers:
+            self.controller.config.del_frozen(name)
             self.controller.frozen_workers.pop(name)
+
         else:
+            # config save frozen worker name
+            self.controller.config.add_frozen(name)
             # add worker name to controllers frozen list
             self.controller.frozen_workers[name] = int(tally)
-            # config freeze
 
         # Sort worker display list with new data
         self.controller.tally_sort()
@@ -258,8 +262,6 @@ class View(tk.Tk):
         self.controller.update_view()
 
 # ================== Entry Box text Validators =================== #
-    # Validators for textbox Entry widgits
-
     # Only allows numbers to be entered
     def _only_numbers(self, char):
             return char.isdigit()
@@ -302,10 +304,10 @@ class View(tk.Tk):
 
         # Send database save request to controller
         self.controller.request_save()
-        print(f"CONTROLLER: Frozen workers: {self.controller.frozen_workers}")
 
     # Initializes the Worker's Selector box and Display
     def initialize_view(self):
+        # Sort worker display list with new data
         self._make_worker_selector(workers=self.controller.fetch_worker_names())
         self._make_worker_display(workers=self.controller.fetch_worker_names())
 

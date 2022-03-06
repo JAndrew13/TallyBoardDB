@@ -130,12 +130,21 @@ class Config:
     def load(self):
         # Load App Settings from .ini and save to Config object
         self.bg_color = self.config['settings']['BG_COLOR']
-        print(self.bg_color)
+        print("TODO: LOAD BG COLOR: Model - line 133")
 
         # Load saved data from .ini and save to Config Object
         frozen_data = self.config['data']['frozen']
-        self.frozen = [name for name in frozen_data.split(',')]
-        print(self.frozen)
+        if len(frozen_data) == 0:
+            pass
+        else:
+            self.frozen = [name for name in frozen_data.split(', ')]
+
+    # checks that all workers in config are still relevant
+    def check_current(self, current):
+        saved = self.frozen
+        for name in saved:
+            if name not in current:
+                self.del_frozen(name)
 
     # Saves current app settings and data to the config file
     def save(self):
@@ -143,7 +152,6 @@ class Config:
         for name in self.frozen:
             update += f"{name}, "
         update = update[:-2]
-        print(update)
 
         self.config.set('data', 'frozen', update)
         self.config.set('settings', 'bg_color', self.bg_color)
@@ -161,13 +169,17 @@ class Config:
 
     # Takes input of worker name and saves to config
     def add_frozen(self, name):
-        self.frozen.append(name)
-        self.set_frozen()
+        if name in self.frozen:
+            self.del_frozen(name)
+        else:
+            self.frozen.append(name)
+            self.set_frozen()
 
     # takes input of worker name and removes from config
     def del_frozen(self, name):
         if name in self.frozen:
-            self.frozen.pop(name)
+            index = self.frozen.index(name)
+            self.frozen.pop(index)
             self.set_frozen()
         else:
             print('Name not found!')
@@ -188,6 +200,7 @@ class Config:
         for name in self.frozen:
             update += f"{name}, "
         update = update[:-2]
+        print(f"config update: {update}")
 
         self.config.set('data', 'frozen', update)
         with open(self.CONFIG_FILE_LOC, 'w') as configfile:
