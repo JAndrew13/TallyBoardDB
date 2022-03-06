@@ -263,7 +263,6 @@ class View(tk.Tk):
         # refresh view (update long data)
         self.controller.update_view()
 
-
 # ================== Entry Box text Validators =================== #
     # Only allows numbers to be entered
     def _only_numbers(self, char):
@@ -336,8 +335,11 @@ class View(tk.Tk):
     # opens color picker window
     def color_change(self):
         new_color=(askcolor(title="Tkinter Color Chooser")[1])
-        self.set_new_color(new_color)
-        self.controller.config.set_bg(f"{new_color}")
+        if new_color == None:
+            pass
+        else:
+            self.set_new_color(new_color)
+            self.controller.config.set_bg(f"{new_color}")
 
     def main(self):
         self.mainloop()

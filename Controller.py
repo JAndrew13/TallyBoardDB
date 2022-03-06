@@ -90,9 +90,11 @@ class Controller:
             elif self.submit["oper"] == "-":
                 amount = int(self.view.cust_var.get())
                 self.set_working_data(self.workshop.sub_tally(name, amount))
-
+            elif self.submit['oper'] == "":
+                return
             self.view.update_short_data()
             self.view._button_reseter()
+            self.response_operator(7)
 
         # CLEAR TOTAL (DONE)
         elif response == 7:
