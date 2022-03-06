@@ -61,6 +61,7 @@ class View(tk.Tk):
         self._container = tk.Frame(self, background=self.BG_COLOR)
         self._container.pack(side="top", fill="both", expand=True, padx=self.PAD, pady=self.PAD)
 
+    # Creates the listbox object of selectable workers
     def _make_worker_selector(self, workers):
         selection = 0
 
@@ -80,6 +81,7 @@ class View(tk.Tk):
 
 # =================== Widget and View creation ===================== #
 
+    # Creates the majority of widgets on screen
     def _make_widgets(self):
     # Frame : Button Grid
         outer_frm = tk.Frame(self._container)
@@ -174,23 +176,28 @@ class View(tk.Tk):
         self.clr_btn = ttk.Button(self.settings_frm, text="Color Picker",  command=lambda: self.color_change())
         self.clr_btn.pack()
 
+    # A Button creation factory..
     def _button_factory(self, container, text, width, side, button_name):
         btn = ttk.Button(container, text=text, width=width, command=
                          lambda button=button_name: self.controller.action_button(button_name))
         btn.pack(side=side, padx=2, pady=2)
 
+    # adds ON / OFF funtionality to operand buttons
     def _button_add(self):
         self.btn_adder.config(state=tk.DISABLED)
         self.btn_subber.config(state=tk.ACTIVE)
 
+    # adds ON / OFF funtionality to operand buttons
     def _button_sub(self):
         self.btn_adder.config(state=tk.ACTIVE)
         self.btn_subber.config(state=tk.DISABLED)
 
+    # Resets the state of ADD / SUB operand buttons
     def _button_reseter(self):
         self.btn_adder.config(state=tk.ACTIVE)
         self.btn_subber.config(state=tk.ACTIVE)
 
+    # Creates active display of Workers and their data
     def _display_factory(self, name, tally, status):
         if status == "freeze":
             color = self.UNFROZEN_COL
@@ -213,6 +220,7 @@ class View(tk.Tk):
         self.freeze_btn = tk.Button(self.row_frame, text=status, width=9, bg=color, command=lambda: self.freeze_worker(name, tally))
         self.freeze_btn.pack(side='left', padx=4, pady=2)
 
+    # Arranges all of the workers in the lower display
     def _make_worker_display(self, workers):
         # Create outer frame for worker data display
         self.worker_outer_frame = \
@@ -234,17 +242,7 @@ class View(tk.Tk):
                 status = unfrozen
             self._display_factory(name, tally, status)
 
-
-# ================== Entry Box text Validators =================== #
-
-    def _only_numbers(self, char):
-            return char.isdigit()
-
-    def _only_letters(self, char):
-            return char.isalpha()
-
-# =================== Custom Entry Variale Functions =================== #
-    # Controls response from "freeze" buttons
+    # Controls response from workers "freeze" buttons
     def freeze_worker(self, name, tally):
         if name in self.controller.frozen_workers:
             self.controller.frozen_workers.pop(name)
@@ -259,16 +257,30 @@ class View(tk.Tk):
         # refresh view (update long data)
         self.controller.update_view()
 
+# ================== Entry Box text Validators =================== #
+    # Validators for textbox Entry widgits
+
+    # Only allows numbers to be entered
+    def _only_numbers(self, char):
+            return char.isdigit()
+
+    # Only allows letters to be entered
+    def _only_letters(self, char):
+            return char.isalpha()
+
+# =================== "Custom Number" entry functions =================== #
+    # gets value entered in the custom number entry box
     def _get_cust_var(self):
         return self.cust_var.get()
 
+    # sets the custom entry amount to temporary data
     def _set_cust_var(self, value):
         self.cust_var.set(value)
 
 # ================== Data Updating Functions =================== #
 
     # Updates shorthand data (Value display labels)
-    # Used to update, present, and save changes to worker totals ie. Submit, reset, clear
+    # Used to update, show, and save changes to worker totals ie. Submit, reset, clear
     def update_short_data(self):
         # pull new "temporary" total from controller -> send to display label
         self.worker_outer_frame.destroy()
@@ -292,6 +304,7 @@ class View(tk.Tk):
         self.controller.request_save()
         print(f"CONTROLLER: Frozen workers: {self.controller.frozen_workers}")
 
+    # Initializes the Worker's Selector box and Display
     def initialize_view(self):
         self._make_worker_selector(workers=self.controller.fetch_worker_names())
         self._make_worker_display(workers=self.controller.fetch_worker_names())
@@ -301,9 +314,9 @@ class View(tk.Tk):
     def _set_bg_color(self, color):
         self.BG_COLOR = color
 
+    # opens color picker window
     def color_change(self):
         new_color=(askcolor(title="Tkinter Color Chooser"))
-
 
 
 

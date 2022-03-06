@@ -2,7 +2,6 @@ from Model import Model, Workshop, Config
 from View import View
 import operator
 
-
 class Controller:
     # Startup Controller and initialize -> View, Model, Workshop
     def __init__(self):
@@ -13,54 +12,7 @@ class Controller:
         self.submit = {"name": "", "amount": "", "oper": ""}
         self.frozen_workers = {}
 
-    # Initializes Application Data: Check for saved file / Creates New File
-    # Loads Existing file -> Sets "Working Dictionary" as loaded file data
-    def Initialize(self):
-
-        # Check for existing database,  if non exists --> create database file
-        print("checking database..")
-        if self.model.checker():
-            print("Success!")
-
-        # Load Existing database
-        data = self.model.load()
-        print("Success!")
-
-        # Gets data from Model(load) and sets Controller's "Working data"
-        self.set_working_data(data)
-        # Set current_total to 0
-        self.model.current_total = 0
-
-        self.config.load()
-        self.view._set_bg_color(self.config.get_bg())
-
-        # Initializes startup view
-        self.view.initialize_view()
-
-    # Takes new data (dict) -> Updates Controller's "Working Data" (dict)
-    def set_working_data(self, new_data):
-        self.working_data = new_data
-
-    # Grab Data from Database and save to a usable dictionary
-    def fetch_working_data(self):
-        data = self.working_data
-        return data
-
-    # pull working data and request DB save via Model
-    def request_save(self):
-    # Save data to databse file
-        data = self.working_data
-        self.model.save(data)
-
-    # Save config data to config file
-        self.save_config()
-
-    # Grabs working data and returns a list of names
-    def fetch_worker_names(self):
-        worker_names = []
-        for name in self.fetch_working_data():
-            worker_names.append(name)
-        return(worker_names)
+# ======================= EVENT HANDELING ======================== #
 
     # Gets button-click input from View -> Decodes -> send to Response operator
     def action_button(self, button_text):
@@ -148,18 +100,47 @@ class Controller:
             self.view._button_reseter()
             self.submit["oper"] = ""
 
+# =========================== DATA MANAGEMENT ========================== #
+
     def clear_individual_tally(self, name, tally):
         self.set_working_data(self.workshop.sub_tally(name, tally))
         print(f"{name}'s tally is cleared")
         self.view.update_long_data()
 
+    # Takes new data (dict) -> Updates Controller's "Working Data" (dict)
+    def set_working_data(self, new_data):
+        self.working_data = new_data
+
+    # Grab Data from Database and save to a usable dictionary
+    def fetch_working_data(self):
+        data = self.working_data
+        return data
+
+    # pull working data and request DB save via Model
+    def request_save(self):
+    # Save data to databse file
+        data = self.working_data
+        self.model.save(data)
+
+    # Save config data to config file
+        self.save_config()
+
+    # Grabs working data and returns a list of names
+    def fetch_worker_names(self):
+        worker_names = []
+        for name in self.fetch_working_data():
+            worker_names.append(name)
+        return(worker_names)
+
     # Gets current total from Model -> return current total integer
     def get_current_total(self):
         return self.model.current_total
 
+    # gets the current "custom total" from the views entry box, then saves to the model
     def get_set_current_total(self):
         self.view._set_cust_var(self.model.current_total)
 
+    # Gets currently selected operator for "submit" funtion
     def get_operand(self):
         return self.submit["oper"]
 
@@ -168,8 +149,8 @@ class Controller:
         # Returns name of selected worker
         return self.view.listbox.get(self.view.listbox.curselection())
 
+    # returns the listbox index of the selected worker
     def get_selected_worker_index(self):
-        # returns the listbox index of the selected worker
         return self.view.listbox.curselection()[0]
 
     # Takes Controllers "Working Data" (dict) -> Returns sorted dict(ascending)
@@ -189,15 +170,42 @@ class Controller:
                 pass
         return sorted_workers
 
+    # Updates hard data changes in the View
     def update_view(self):
         self.view.update_long_data()
+
+# ====================== APP INITIALIZATION ===================== #
+
+    # Initializes Application Data: Check for saved file / Creates New File
+    # Loads Existing file -> Sets "Working Dictionary" as loaded file data
+    def Initialize(self):
+
+        # Check for existing database,  if non exists --> create database file
+        print("checking database..")
+        if self.model.checker():
+            print("Success!")
+
+        # Load Existing database
+        data = self.model.load()
+        print("Success!")
+
+        # Gets data from Model(load) and sets Controller's "Working data"
+        self.set_working_data(data)
+        # Set current_total to 0
+        self.model.current_total = 0
+
+        self.config.load()
+        self.view._set_bg_color(self.config.get_bg())
+
+        # Initializes startup view
+        self.view.initialize_view()
 
     # Initialize View's mainloop()
     def main(self):
         self.view.main()
 
+# ====================== CONFIG OPERATIONS ====================== #
 
-# ====================== CONFIG FUNCTIONS ====================== #
     def save_config(self):
         pass
 
@@ -207,15 +215,4 @@ class Controller:
     def fetch_bg_color(self):
         self.config.get_bg()
 
-if __name__ == "__main__":
-
-    Tallyboard = Controller()
-    Tallyboard.Initialize()
-    Tallyboard.main()
-
-
-
-
-
-# ===================  Testing  =================== #
 

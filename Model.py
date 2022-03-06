@@ -11,8 +11,11 @@ class Model:
     CONFIG_FILENAME = "config.ini"
     WORKING_DB = {}
 
+    # current saved selections for the "submit" funtion
     current_total = 0
     current_operand = ""
+
+    # current list of Frozen Workers
     frozen_workers = []
 
     # operand-Button display labels
@@ -29,6 +32,8 @@ class Model:
 
     def __init__(self):
         pass
+
+    # Takes button inputs as codes,  deciphers, and then returns directions to controller
     def decoder(self, code):
         print(f"Decoding {code}")
         response = Model.CODE_LIB[code]
@@ -132,6 +137,7 @@ class Config:
         self.frozen = [name for name in frozen_data.split(',')]
         print(self.frozen)
 
+    # Saves current app settings and data to the config file
     def save(self):
         update = ""
         for name in self.frozen:
@@ -157,7 +163,6 @@ class Config:
     def add_frozen(self, name):
         self.frozen.append(name)
         self.set_frozen()
-
 
     # takes input of worker name and removes from config
     def del_frozen(self, name):
