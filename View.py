@@ -54,10 +54,12 @@ class View(tk.Tk):
 
         self._make_main_frame()
         self._make_widgets()
+
         self.current_total = 0
 
     # Creates master widget container in view
     def _make_main_frame(self):
+
         self._container = tk.Frame(self, background=self.BG_COLOR)
         self._container.pack(side="top", fill="both", expand=True, padx=self.PAD, pady=self.PAD)
 
@@ -261,6 +263,7 @@ class View(tk.Tk):
         # refresh view (update long data)
         self.controller.update_view()
 
+
 # ================== Entry Box text Validators =================== #
     # Only allows numbers to be entered
     def _only_numbers(self, char):
@@ -310,17 +313,31 @@ class View(tk.Tk):
         # Sort worker display list with new data
         self._make_worker_selector(workers=self.controller.fetch_worker_names())
         self._make_worker_display(workers=self.controller.fetch_worker_names())
+        self._set_bg_color()
 
 # =================== App Modifiers ======================== #
     # sets View's Default BG Color
-    def _set_bg_color(self, color):
-        self.BG_COLOR = color
+    def _set_bg_color(self):
+        if self.BG_COLOR == self.controller.current_color:
+            self.set_new_color(self.controller.current_color)
+        else:
+            new_color = self.controller.fetch_bg_color()
+            print(new_color)
+            self.set_new_color(new_color)
+
+    def set_new_color(self, new_color):
+        self.configure(bg=new_color)
+        self.BG_COLOR = new_color
+        self._container.destroy()
+        self._make_main_frame()
+        self._make_widgets()
+        self.update_long_data()
 
     # opens color picker window
     def color_change(self):
-        new_color=(askcolor(title="Tkinter Color Chooser"))
-
-
+        new_color=(askcolor(title="Tkinter Color Chooser")[1])
+        self.set_new_color(new_color)
+        self.controller.config.set_bg(f"{new_color}")
 
     def main(self):
         self.mainloop()

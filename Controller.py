@@ -11,6 +11,7 @@ class Controller:
         self.workshop = Workshop(self, self.model.load())
         self.submit = {"name": "", "amount": "", "oper": ""}
         self.frozen_workers = {}
+        self.current_color = ""
 
 # ======================= EVENT HANDELING ======================== #
 
@@ -201,7 +202,8 @@ class Controller:
             self.frozen_workers[name] = self.workshop.get_Tally(name)
         print("Success!")
 
-        self.view._set_bg_color(self.config.get_bg())
+        self.current_color = self.fetch_bg_color()
+
 
         # Initializes startup view
         self.view.initialize_view()
@@ -213,6 +215,6 @@ class Controller:
 # ====================== CONFIG OPERATIONS ====================== #
 
     def fetch_bg_color(self):
-        self.config.get_bg()
+        return self.config.get_bg()
 
 

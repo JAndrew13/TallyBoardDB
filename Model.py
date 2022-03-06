@@ -114,7 +114,6 @@ class Workshop:
     def get_Tally(self, name):
         return (self.data[name])
 
-
 # Config Class handless and operates the Config.ini file, app preferences, and settings
 class Config:
     CONFIG_FILE_LOC = "config.ini"
@@ -189,7 +188,7 @@ class Config:
     def set_bg(self, color):
 
         self.config['settings']['BG_COLOR'] = color
-        self.config.set('data', 'bg_color', color)
+        self.config.set('settings', 'bg_color', color)
         with open(self.CONFIG_FILE_LOC, 'w') as configfile:
             self.config.write(configfile)
         self.bg_color = color
