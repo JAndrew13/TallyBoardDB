@@ -53,7 +53,6 @@ class Model:
 
         except FileNotFoundError:
             with open(self.DATABASE_FILENAME, "w"):
-                print("Database file created")
                 self.create_db()
                 return True
 
@@ -61,7 +60,6 @@ class Model:
     def load(self):
         with open(self.DATABASE_FILENAME, "r") as readfile:
             json_object = json.load(readfile)
-            print("loading database..")
             self.WORKING_DB = json_object
             return (json_object)
 
@@ -70,12 +68,10 @@ class Model:
             json_object = json.dumps(data)
             with open(self.DATABASE_FILENAME, "w") as outfile:
                 outfile.write(json_object)
-            print("Database template saved")
 
     @classmethod # Creates new (empty) database file as 'Database.JSON'
     def create_db(self):
         data = {}
-        print("Creating Database Template")
         self.save(data)
 
 # =============  Worker Construction / Management operators  ============== #
@@ -179,7 +175,6 @@ class Config:
             self.frozen.pop(index)
             self.set_frozen()
         else:
-            print('Name not found!')
             pass
 
     # Takes input of "color" and saves to .ini
@@ -197,7 +192,6 @@ class Config:
         for name in self.frozen:
             update += f"{name}, "
         update = update[:-2]
-        print(f"config update: {update}")
 
         self.config.set('data', 'frozen', update)
         with open(self.CONFIG_FILE_LOC, 'w') as configfile:

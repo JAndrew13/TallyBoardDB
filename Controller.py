@@ -17,7 +17,6 @@ class Controller:
 
     # Gets button-click input from View -> Decodes -> send to Response operator
     def action_button(self, button_text):
-        print(f'action item: {button_text} clicked')
         if "INT" in button_text:
             new_total = self._get_int(button_text)
             self.get_set_current_total()
@@ -63,7 +62,6 @@ class Controller:
                 self.view.worker_outer_frame.destroy()
                 self.view.update_long_data()
             else:
-                print("Error: No name entered")
                 pass
 
         # DELETE WORKERS
@@ -73,7 +71,6 @@ class Controller:
                 self.set_working_data(self.workshop.del_worker(worker_name))
                 self.view.update_long_data()
             else:
-                print("Error: No workers to delete!")
                 pass
 
         # ADD CURRENT TOTAL
@@ -107,7 +104,6 @@ class Controller:
 
     def clear_individual_tally(self, name, tally):
         self.set_working_data(self.workshop.sub_tally(name, tally))
-        print(f"{name}'s tally is cleared")
         self.view.update_long_data()
 
     # Takes new data (dict) -> Updates Controller's "Working Data" (dict)
@@ -182,27 +178,19 @@ class Controller:
     # Loads Existing file -> Sets "Working Dictionary" as loaded file data
     def Initialize(self):
 
-        # Check for existing database,  if non exists --> create database file
-        print("checking database..")
-        if self.model.checker():
-            print("Success!")
-
         # Load Existing database
         data = self.model.load()
-        print("Success!")
 
         # Gets data from Model(load) and sets Controller's "Working data"
         self.set_working_data(data)
         # Set current_total to 0
         self.model.current_total = 0
 
-        print("loading config..")
         self.config.load()
         self.config.check_current(self.working_data)
         saved_frozen = self.config.get_frozen()
         for name in saved_frozen:
             self.frozen_workers[name] = self.workshop.get_Tally(name)
-        print("Success!")
 
         self.current_color = self.fetch_bg_color()
 
