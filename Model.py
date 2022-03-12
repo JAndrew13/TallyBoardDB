@@ -35,7 +35,6 @@ class Model:
 
     # Takes button inputs as codes,  deciphers, and then returns directions to controller
     def decoder(self, code):
-        print(f"Decoding {code}")
         response = Model.CODE_LIB[code]
         return response
 
@@ -129,7 +128,6 @@ class Config:
     def load(self):
         # Load App Settings from .ini and save to Config object
         self.bg_color = self.config['settings']['BG_COLOR']
-        print("TODO: LOAD BG COLOR: Model - line 133")
 
         # Load saved data from .ini and save to Config Object
         frozen_data = self.config['data']['frozen']

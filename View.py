@@ -172,7 +172,7 @@ class View(tk.Tk):
 
     # Create settings Buttons
         self.settings_frm = tk.Frame(self._container, background=self.BG_COLOR)
-        self.settings_frm.place(x=308, y=550)
+        self.settings_frm.place(x=305, y=550)
 
     # Button : Color Picker =
         self.clr_btn = ttk.Button(self.settings_frm, text="Color Picker",  command=lambda: self.color_change())
@@ -321,7 +321,6 @@ class View(tk.Tk):
             self.set_new_color(self.controller.current_color)
         else:
             new_color = self.controller.fetch_bg_color()
-            print(new_color)
             self.set_new_color(new_color)
 
     def set_new_color(self, new_color):
