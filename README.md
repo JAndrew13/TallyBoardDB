@@ -3,7 +3,7 @@ Tally Board DB
 *** Please Note ***
 Tallyboard DB is currently under major development!
   - To use the app in its current state, make sure all files are in the same folder, and you are running the current version of python. 
-  - To Start the application, run the file named "Controller.py" 
+  - To Start the application, run the file named "app.py" 
 
 Project Overview
 	  TallyBoard DB is a simple CRUD application designed for a local jewelry shop to help the Project Manager track and distribute repair jobs evenly across all workers. 
