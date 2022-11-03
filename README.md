@@ -1,13 +1,12 @@
+
 # TallyBoard DB ![stable]
 
 <!-- ABOUT SECTION -->
 
 TallyBoard DB is a simple MVC/CRUD application designed for a local jewelry shop to help the Project Manager track and distribute repair jobs evenly across all workers.
-This task was previously time consuming, done by hand, and was vulnerable to miscalculations.
-Tally Board DB exists as a simple digital counter that makes task distribution more efficient and effective.
+This task was previously time consuming, done by hand, and was vulnerable to miscalculations. This software exists as a simple digital counter that makes task distribution more efficient and effective.
 
-Designed in a single Python Tkinter window, TallyBoard is meant to be quick and easy to use.
-Each input is autosaved as JSON data in the database, and employee workload values are automatically sorted by quantity.
+This was my first attempt at making a full application from start to finish for a client, using pure python. Designed in a single Python Tkinter window, TallyBoard is meant to be quick and easy to use. Each input is autosaved as JSON data in the local database file, and employee workload values are automatically sorted and displayed by quantity.
 This helps to effectively distribute new jobs evenly across workers as they come in.
 
 
@@ -18,7 +17,6 @@ This helps to effectively distribute new jobs evenly across workers as they come
 + [Usage](#usage)
 + [Directory](#directory)
 + [Contact](#contact)
-+ [Acknowledgments](#acknowledgments)
 
 
 <!-- Prerequisites -->
@@ -55,7 +53,7 @@ Inside this project, I have included the fully packaged Windows version of the a
 
 
 <!-- USAGE EXAMPLES -->
-## Using the App
+## Using the App (client-side)
 
 ### The Roster Display
 
@@ -120,7 +118,7 @@ Next to each worker are two buttons, "Reset" and "Freeze".
   * The "Reset" button will reset the workers total back to zero, moving them to the bottom of the list.
   * The "Freeze" button is meant to be used when the worker is out of the office, on vacation, sick, etc. When a worker is 'frozen', they are removed from the sorting function and placed at the bottom of the tally board until 'unfreeze' is selected. This helps the user remember not to apply new jobs to that worker until they return to the office.
 
-### The color Picker
+### The Color Picker
 
 Located at the bottom right corner of the app window is the "Color Picker" button. This allows the user to personalize the text and window color of the application. :)
 
@@ -129,8 +127,52 @@ Located at the bottom right corner of the app window is the "Color Picker" butto
 <!-- DIRECTORY -->
 ## File Directory
 
-### [/images](https://github.com/JAndrew13/)
-Contains all image files used in the application and readme.
+ `/images` 
+ Contains all image files used in the application and readme.
+
+`/distribution`
+Contains the packaged .RAR file of the completed project, ready to run on windows pc
+
+`/venv`
+Contains boiler-plate files related to the virtual environment setup for python IDE. 
+
+`/root`
+Contains the files related to the apps main functionality.
+
+
+<!-- OPERATIONS -->
+# Operations
+Here, I'd like to provide an brief explanation of the code, and how the program operates as a whole. The focus of this project was to really drill down on the "MVC" design pattern. Listed below are the six main files that make up the program, along with a short description of their functions and purpose.
+
+ ## `App.py`
+ This is the starting point for the application. This file simply imports and runs the controller file. 
+
+ ## `Controller.py`
+ After being triggered by the App.py file on startup, the controller class starts by loading the model, view, config settings. Its main job is to receive requests from the View, and determine how to respond. Its functions are separated into four categories:
+ 
+ `Event Handling` 
+ ~ The event handling functions work alongside the model to receive user inputs and determine how to respond.
+ 
+ `Data Managment`
+~ Contains all database control calls for fetching, updating, and deleting data stored data. These calls then get sent to the Model for actions.
+
+ `App initialization`
+~ Initializes the programs view, checks for previously saved config data and applies it to the app.
+ 
+ `Config Operations`
+~ Pulls saved program settings from the config file if any exist.
+ 
+ ## `Model.py`
+ 
+ ## `View.py`
+ 
+
+ 
+ ## `Database.json`
+ 
+ ## `Config.ini`
+
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -141,18 +183,10 @@ Jake Brunner -  jbbrunner10@gmail.com
 
 LinkedIn - https://www.linkedin.com/in/jake-brunner-21760522b/
 
-This Repository - https://github.com/jandrew13/Web-Dev-Bootcamp
+This Repository - https://github.com/jandrew13/TallyboardDB
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
-<!-- ACKNOWLEDGMENTS -->
-## Acknowledgments
-* [The 2022 Web Development Course](https://www.udemy.com/course/the-complete-web-development-bootcamp)
-* [The London App Brewery](https://www.londonappbrewery.com/)
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 
@@ -177,35 +211,10 @@ This Repository - https://github.com/jandrew13/Web-Dev-Bootcamp
 [issues-shield]: https://img.shields.io/github/issues/othneildrew/Best-README-Template.svg?style=for-the-badge
 [issues-url]: https://github.com/othneildrew/Best-README-Template/issues
 
-<!-- TOOLS -->
+<!-- USED TOOLS -->
 
 [git-scl.com]:https://img.shields.io/badge/git-%23F05033.svg?style=for-the-badge&logo=git&logoColor=white
 [git-url]:https://git-scm.com/
-[Postman.com]:https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white
-[Postman-url]:https://Postman.com
-[Babel.com]:https://img.shields.io/badge/Babel-F9DC3e?style=for-the-badge&logo=babel&logoColor=black
-[Babel-url]:Babel.com
-[JavaScript.com]:https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E
-[JavaScript-url]:https://javascript.com
-[Heroku.com]: https://img.shields.io/badge/heroku-%23430098.svg?style=for-the-badge&logo=heroku&logoColor=white
-[Heroku-url]: https://heroku.com
-[NodeJS.org]:https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white
-[NodeJS-url]: https://nodejs.org
-[React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
-[React-url]: https://reactjs.org/
-[Bootstrap.com]: https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white
-[Bootstrap-url]: https://getbootstrap.com
-[JQuery.com]: https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white
-[JQuery-url]: https://jquery.com
-[MongoDB.com]: https://img.shields.io/badge/MongoDB-%234ea94b.svg?style=for-the-badge&logo=mongodb&logoColor=white
-[MongoDB-url]: https://mongodb.com
-[Expressjs.com]: https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB
-[Expressjs-url]: https://expressjs.com
-[npmjs.com]:https://img.shields.io/badge/NPM-%23000000.svg?style=for-the-badge&logo=npm&logoColor=white
-[npmjs-url]:npmjs.com
-[CSS3]: https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white
-[HTML5]: https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white
-
 
 # Application Startup
 App → Controller (initialize Controller class object)
