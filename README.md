@@ -1,5 +1,3 @@
-
-<<<<<<< HEAD
 # TallyBoard DB ![stable]
 
 <!-- ABOUT SECTION -->
@@ -12,7 +10,7 @@ Designed in a single Python Tkinter window in a MVC structure, TallyBoard is mea
 Each input is autosaved as JSON data in the database, and employee workload values are automatically sorted by quantity.
 This helps to effectively distribute new jobs evenly across workers as they come in.
 
-![TallyBoardDB overview image](https://github.com/JAndrew13/TallyboardDB/images/TallyBoard1.jpg?raw=true)
+![TallyBoardDB overview image](https://github.com/JAndrew13/TallyBoardDB/blob/master/Images/Tallyboard1.jpg)
 
 <!-- TABLE OF CONTENTS -->
   #### Table of contents
@@ -61,7 +59,7 @@ Inside this project, I have included the fully packaged Windows version of the a
 
 ### The Roster Display
 
-![TallyBoardDB overview image](https://github.com/JAndrew13/TallyboardDB/images/TallyBoard3.jpg?raw=true)
+![TallyBoardDB overview image](https://github.com/JAndrew13/TallyBoardDB/blob/master/Images/Tallyboard3.jpg)
 
 This area of the application simply displays all of the Available workers saved in the database, while also acting as a selector for any actions preformed in the app. The default selection is the top-most worker, but this selection can be changed by clicking a different worker's name.
 A worker must be selected to:
@@ -70,7 +68,7 @@ A worker must be selected to:
 
 ### Add/Remove Available workers
 
-![TallyBoardDB overview image](https://github.com/JAndrew13/TallyboardDB/images/TallyBoard2.jpg?raw=true)
+![TallyBoardDB overview image](https://github.com/JAndrew13/TallyBoardDB/blob/master/Images/Tallyboard2.jpg)
 
 The two buttons at the top of the app window are used for adding and removing workers from the local database.
    Adding a worker to the database:
@@ -83,7 +81,7 @@ The two buttons at the top of the app window are used for adding and removing wo
 
 ### Value Selector
 
-![TallyBoardDB overview image](https://github.com/JAndrew13/TallyboardDB/images/TallyBoard4.jpg?raw=true)
+![TallyBoardDB overview image](https://github.com/JAndrew13/TallyBoardDB/blob/master/Images/Tallyboard4.jpg)
 
 When adding or subtracting values from a workers total using the Value Selector, you can either use the custom input box or the quick select number buttons.
 The quick select buttons will automatically add to the total each time a button is clicked. For example, if I want to add a job worth $561 to Jake's total, I would
@@ -102,7 +100,7 @@ select "Jake" from the roster display, then do the following:
 
 ### Total Value Action Buttons
 
-![TallyBoardDB overview image](https://github.com/JAndrew13/TallyboardDB/images/TallyBoard5.jpg?raw=true)
+![TallyBoardDB overview image](https://github.com/JAndrew13/TallyBoardDB/blob/master/Images/Tallyboard5.jpg)
 
 These four action buttons tell the app what to do once you have set a total value.
 * "Add (+)" - Sets the app to 'addition mode' for the entry
@@ -114,7 +112,7 @@ These four action buttons tell the app what to do once you have set a total valu
 
 ### The Tally board
 
-![TallyBoardDB overview image](https://github.com/JAndrew13/TallyboardDB/images/TallyBoard5.jpg?raw=true)
+![TallyBoardDB overview image](https://github.com/JAndrew13/TallyBoardDB/blob/master/Images/Tallyboard6.jpg)
 
 This is the main area of interest for the app. The Tally Board pulls all of the workers from the Roster and keeps track of their total workloads. Each time a change is made in app, the Tally Board will automatically refresh and sort the workers by their totals in ascending order. When new work comes into the shop, the worker at the top of the list would be the next to receive a job because they have the smallest workload.
 
@@ -305,5 +303,4 @@ Future Updates:
  - Support greater worker maximum number (<9)
  - Modify data storage to allow for duplicate worker nameing
  - Add ease of use features (Quick selection memory)
- - Add Enter button detetction
->>>>>>> d35d9cc7ca9561c66c0831435bfcc00c0445070d
+ - Add "Enter" button detetction
