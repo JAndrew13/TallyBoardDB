@@ -10,7 +10,6 @@ Designed in a single Python Tkinter window in a MVC structure, TallyBoard is mea
 Each input is autosaved as JSON data in the database, and employee workload values are automatically sorted by quantity.
 This helps to effectively distribute new jobs evenly across workers as they come in.
 
-![TallyBoardDB overview image](https://github.com/JAndrew13/TallyBoardDB/blob/master/Images/Tallyboard1.jpg)
 
 <!-- TABLE OF CONTENTS -->
   #### Table of contents
