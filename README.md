@@ -2,11 +2,11 @@
 
 <!-- ABOUT SECTION -->
 
-TallyBoard DB is a simple CRUD application designed for a local jewelry shop to help the Project Manager track and distribute repair jobs evenly across all workers.
+TallyBoard DB is a simple MVC/CRUD application designed for a local jewelry shop to help the Project Manager track and distribute repair jobs evenly across all workers.
 This task was previously time consuming, done by hand, and was vulnerable to miscalculations.
 Tally Board DB exists as a simple digital counter that makes task distribution more efficient and effective.
 
-Designed in a single Python Tkinter window in a MVC structure, TallyBoard is meant to be quick and easy to use.
+Designed in a single Python Tkinter window, TallyBoard is meant to be quick and easy to use.
 Each input is autosaved as JSON data in the database, and employee workload values are automatically sorted by quantity.
 This helps to effectively distribute new jobs evenly across workers as they come in.
 
@@ -33,14 +33,15 @@ This helps to effectively distribute new jobs evenly across workers as they come
 
 1. Clone or download the repo
    ```sh
-   git clone https://github.com/your_username_/Project-Name.git
+   git clone https://github.com/JAndrew13/TallyBoardDB.git
    ```
 
 ### To run the application
 Inside this project, I have included the fully packaged Windows version of the application. There is no need to install Tallyboard, it runs right from the project folder.
 
-1. In your file explorer, navigate to "~/TallyBoardDB/Packaged" in the project folder.
-2. Run "Tallyboard.exe"
+1. In your file explorer, navigate to "~/TallyBoardDB/Distribution" in the project folder.
+2. Exract the "TallyBoardDB.rar" file to your desired location.
+3. Run "Tallyboard.exe" (no installation required)
 
 ### To inspect the code without running the application
 1. Open the project inside your Python compatible IDE.
@@ -129,7 +130,7 @@ Located at the bottom right corner of the app window is the "Color Picker" butto
 ## File Directory
 
 ### [/images](https://github.com/JAndrew13/)
-Contains all image files used in the application
+Contains all image files used in the application and readme.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
