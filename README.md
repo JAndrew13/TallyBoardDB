@@ -146,7 +146,7 @@ Contains the files related to the apps main functionality.
 <!-- OPERATIONS -->
 # Operations
 Here, I'd like to provide an brief explanation of the code, and how the program operates as a whole. The focus of this project was to really drill down on the "MVC" design pattern. Listed below are the six main files that make up the program, along with a short description of their functions and purpose.
-
+## app.py
  ## `App.py`
  This is the starting point for the application. This file simply imports and runs the controller file. 
 
