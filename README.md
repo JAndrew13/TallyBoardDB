@@ -163,14 +163,59 @@ Here, I'd like to provide an brief explanation of the code, and how the program 
 ~ Pulls saved program settings from the config file if any exist.
  
  ## `Model.py`
+ The Model class is the "gate keeper" to the apps long term stored data. It is the only entity in the application that is permitted to access the database - allowing it to read, write, and update the data as needed. While not entirely necessary for this specific program, It is essential in standard "MVC" architecture, so I decided to include it. 
+
+The Model file itself contains three classes - The Model, Workshop, and Config class, each containing a set of class functions. I did this to make sure that the database related functions weren't "out in the open", but instead contained inside the *permitted* Model class.
+
+**The Model Class**
+Responsible for all database connection related functionality.
+
+`Decoder`
+The decoder is a specific function used in conjunction with the controller to help determine the source, value, and intention of a button press. This function could also be held inside the controller, but I decided to keep in the Model, because it handles "raw data". A bit on how this works, is all buttons in the view output 'action codes', which are stored in the model's "*CODE_LIB*" property. These codes get interpreted by the model and sent back to the controller for action. Its a bit odd I suppose, but it worked for me. 
+
+`Database handeling`
+ These four functions are responsible for checking for past data, creating a new database, parsing and converting JSON data, and doing basic 'save' and 'load' processes. 
+
+**The Workshop Class**
+ This class exists to handle 'workshop' related data, things like worker names, the current roster, whos out of the office, and how much work a specific worker has. Its functions can add and remove workers from the app, modify their totals, and fetch specific pieces of their information. 
+
+**The Config Class**
+The Config class operates the Config.ini file, app preferences, settings, and any related changes made by the user. 
+
+`Load/Save/Check Config file` 
+~ These functions check and load startup settings when the app opens, as well as save new preferences to the config.
+
+`get/set/return bg`
+~   Handles settings related to the apps colored background.
+
+`get/add/del/set frozen`
+~ Responsible for fetching and storing save data relating to workers who have been 'frozen' during the last app use.
  
  ## `View.py`
+ Once the controller is loaded, it calls to the view file, and sends over the settings defined in the config file. Here, the view class uses Python's Tkinter to draw up the app UI using it's functions and class properties. Once the app window has been rendered, the view class uses event listeners to detect and changes made by the User, and returns all event data back to the controller. View functions are grouped in the following categories:
  
-
+ `Widgets and view creation`
+ ~ Uses factory patterns to populate all buttons, displays, text boxes, and related triggers
+ 
+ `Text entry validators  `
+ ~ Receives all text entries and validates that appropriate characters are being applied. This prevents alpha characters from being sent into the controllers value calculation functions.
+ 
+ `Custom number entry functions`
+~ Handles integer entries in the custom total box and assists controller in displaying the pre-submitted tally amount.
+ 
+ `Data updating functions`
+ ~ Responsible for rendering and updating the worker display, as well as updating the view long and short term data. "Short term" data being bits of information that are not temporary and are never stored in the database. "Long Term" data being things like worker name changes and total values.
+ 
+ `App modifiers`
+ ~ These functions deal with rendering changes to the app's UI - i.e. background color.
  
  ## `Database.json`
- 
+ The 'Database.json' file will be created in the root project folder when the app opens for the first time. This file is responsible for holding all of the *long term* information used in the app at runtime. It is only accessible via the model, and keeps all data stored in JSON format. 
+
+Because of the *non-sensitive* nature of this application, I felt that storing data in JSON format would be just fine. There currently is no hashing or security applied the database other than 'model only' access. In a more high level application however, sensitive data should be stored in a more secure way.
+  
  ## `Config.ini`
+The config file contains app startup preferences relating to visual styling, while also containing a shorthand memory of any workers set to frozen when the app was last closed. Like the database file, the Config.ini will be created in the root project folder on startup if one doesnt currently exist. 
 
 
 
@@ -191,8 +236,6 @@ This Repository - https://github.com/jandrew13/TallyboardDB
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
-
-[product-screenshot]: images/screenshot.png
 
 [license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
 [license-url]: https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt
@@ -216,95 +259,6 @@ This Repository - https://github.com/jandrew13/TallyboardDB
 [git-scl.com]:https://img.shields.io/badge/git-%23F05033.svg?style=for-the-badge&logo=git&logoColor=white
 [git-url]:https://git-scm.com/
 
-# Application Startup
-App → Controller (initialize Controller class object)
-Controller → Model (DB Pull Request of ALL Data)
-Model → Database (DB Verify (via model) Then returns ALL saved data)
-Model → Controller (Unpacks and sends data to Controller)
-Controller → View (Initializes View and packs data)
-
-# Runtime
-View (Mainloop() - Waits for input)
-View → Controller (Receives input and sends request to Controller)
-Controller → Model (takes new data and requests push from Model)
-Model → DataBase packs and stores NEW data in Database
-Model → Controller (Confirms successful data storage)
-Controller (Receives success message)
-Controller → Model (Requests DB Pull From Model)
-Model → Database (Pulls Data from Database and returns to controller)
-Controller → View (Controller packs data and updates View)
-
-
-Print(“Starting Application”)
-Create Controller(init)
-Model (Communicates with controller and DB)
-	Functions:
-
-Checker(init): #Check for existing DB
-If “YES” then return YES
-If “NO” then CreateDB():
-Return Success
-
-Load() # pull existing JSON data
-Load JSON
-Unpack JSON
-Return Data
-
-Update(Data): #Updates DB with new Entry and Saves entry to DB
-Receive data
-Load()
-Append new data to Data
-Pack data in JSON
-Save()
-
-Save(JSON): # Saves JSON Data to DB
-Receive JSON Data
-Overwrites DataBase With new JSON
-Close DB
-
-CreateDB():
-Create DB.JSON file
-Return Success or Failure
-
-Class Worker()
-	Init
-	Self. name = name
-	Self. tally = tally
-
-
-View
-(GUI Display - renders all elements, buttons, and widgets. Communicates to Controller)
-Initialize View window
-Load view objects
-Take input form user
-
-Functions:
-Project() # takes data and allocation points from Controller and distributes amongst view
-[inputs] Data, Allocations
-
-
-Controller
-(Communicates and initializes with View and Model)
-	INIT():
-self.model = Model()
-		self.data = data(Dictionary)
-
-Functions:
-init_check() → Model
-Request Checker() from Model
-Receive Database
-
-DB_Load() → Model
-Send Request to Model.Load() to get ALL Data
-Save data to self.data
-Allocate Data to sections
-Send allocations to View
-
-DB_Update(data) → Model
-Get data point from View
-Send Request to Model to update data
-
-Database:(Stores the data of all employees and relative workloads)
 	Format: JSON
 =======
 
