@@ -16,12 +16,12 @@ This helps to effectively distribute new jobs evenly across workers as they come
 1. [Prerequisites](#prerequisites)
 2. [Installation](#installation)
 3. [Usage](#usage)
-	1.[Roster](#usage-roster)
-	2.[Add/Del Workers](#usage-workers)
-	3.[Value Selector](#usage-value-selector)
-	4.[Action Buttons](#usage-action-buttons)
-	5.[The Tally Board](#usage-tally-board)
-	6.[Polor Picker](#usage-color-picker)
+	1. [Roster](#usage-roster)
+	2. [Add/Del Workers](#usage-workers)
+	3. [Value Selector](#usage-value-selector)
+	4. [Action Buttons](#usage-action-buttons)
+	5. [The Tally Board](#usage-tally-board)
+	6. [Color Picker](#usage-color-picker)
 5. [Directory](#directory)
 6. [Operations](#operations)
 	1. [App.py](#app.py)
@@ -67,10 +67,13 @@ Inside this project, I have included the fully packaged Windows version of the a
 
 
 <!-- USAGE EXAMPLES -->
+<a name="usage"></a>
+
 # Using the App (client-side)
 
 
 <a name="usage-roster"></a>
+
 ## The Roster Display
 
 ![TallyBoardDB overview image](https://github.com/JAndrew13/TallyBoardDB/blob/master/Images/Tallyboard3.jpg)
@@ -82,6 +85,7 @@ A worker must be selected to:
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 <a name="usage-workers"></a>
+
 ## Add/Remove Available workers
 
 
@@ -98,6 +102,7 @@ The two buttons at the top of the app window are used for adding and removing wo
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 <a name="usage-value-selector"></a>
+
 ## Value Selector
 
 ![TallyBoardDB overview image](https://github.com/JAndrew13/TallyBoardDB/blob/master/Images/Tallyboard4.jpg)
@@ -118,6 +123,7 @@ select "Jake" from the roster display, then do the following:
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 <a name="usage-action-buttons"></a>
+
 ## Total Value Action Buttons
 
 ![TallyBoardDB overview image](https://github.com/JAndrew13/TallyBoardDB/blob/master/Images/Tallyboard5.jpg)
@@ -132,6 +138,7 @@ These four action buttons tell the app what to do once you have set a total valu
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 <a name="usage-tally-board"></a>
+
 ## The Tally board
 
 ![TallyBoardDB overview image](https://github.com/JAndrew13/TallyBoardDB/blob/master/Images/Tallyboard6.jpg)
@@ -144,6 +151,7 @@ Next to each worker are two buttons, "Reset" and "Freeze".
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 <a name="usage-color-picker"></a>
+
 ## The Color Picker
 
 Located at the bottom right corner of the app window is the "Color Picker" button. This allows the user to personalize the text and window color of the application. :)
@@ -151,6 +159,8 @@ Located at the bottom right corner of the app window is the "Color Picker" butto
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- DIRECTORY -->
+<a name="directory"></a>
+
 ## File Directory
 
  `/images` 
@@ -172,12 +182,14 @@ Contains the files related to the apps main functionality.
 Here, I'd like to provide an brief explanation of the code, and how the program operates as a whole. The focus of this project was to really drill down on the "MVC" design pattern. Listed below are the six main files that make up the program, along with a short description of their functions and purpose.
 
 <a name="app.py"></a>
+
 ## App
  
  This is the starting point for the application. This file simply imports and runs the controller file. 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 <a name="controller.py"></a>
+
 ## Controller
  
  After being triggered by the App.py file on startup, the controller class starts by loading the model, view, config settings. Its main job is to receive requests from the View, and determine how to respond. Its functions are separated into four categories:
@@ -196,6 +208,7 @@ Here, I'd like to provide an brief explanation of the code, and how the program 
  
  <p align="right">(<a href="#readme-top">back to top</a>)</p>
  <a name="model.py"></a>
+ 
 ## Model
  
  The Model class is the "gate keeper" to the apps long term stored data. It is the only entity in the application that is permitted to access the database - allowing it to read, write, and update the data as needed. While not entirely necessary for this specific program, It is essential in standard "MVC" architecture, so I decided to include it. 
@@ -228,6 +241,7 @@ The Config class operates the Config.ini file, app preferences, settings, and an
  
  <p align="right">(<a href="#readme-top">back to top</a>)</p>
  <a name="view.py"></a>
+ 
 ## View
  
  Once the controller is loaded, it calls to the view file, and sends over the settings defined in the config file. Here, the view class uses Python's Tkinter to draw up the app UI using it's functions and class properties. Once the app window has been rendered, the view class uses event listeners to detect and changes made by the User, and returns all event data back to the controller. View functions are grouped in the following categories:
@@ -248,7 +262,8 @@ The Config class operates the Config.ini file, app preferences, settings, and an
  ~ These functions deal with rendering changes to the app's UI - i.e. background color.
  
  <p align="right">(<a href="#readme-top">back to top</a>)</p>
- <a name="database.py"></a>
+ <a name="database"></a>
+ 
 ## Database.json
  
  The 'Database.json' file will be created in the root project folder when the app opens for the first time. This file is responsible for holding all of the *long term* information used in the app at runtime. It is only accessible via the model, and keeps all data stored in JSON format. 
@@ -256,7 +271,8 @@ The Config class operates the Config.ini file, app preferences, settings, and an
 Because of the *non-sensitive* nature of this application, I felt that storing data in JSON format would be just fine. There currently is no hashing or security applied the database other than 'model only' access. In a more high level application however, sensitive data should be stored in a more secure way.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-<a name="config.py"></a>
+<a name="config"></a>
+
 ## Config.ini
 
 The config file contains app startup preferences relating to visual styling, while also containing a shorthand memory of any workers set to frozen when the app was last closed. Like the database file, the Config.ini will be created in the root project folder on startup if one doesnt currently exist. 
